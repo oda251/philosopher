@@ -1,25 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_utils.h                                      :+:      :+:    :+:   */
+/*   ft_mutex_init.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/19 18:30:19 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/19 19:18:43 by yoda             ###   ########.fr       */
+/*   Created: 2023/11/21 03:36:54 by yoda              #+#    #+#             */
+/*   Updated: 2023/11/21 03:37:22 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_UTILS_H
-# define PHILO_UTILS_H
-# include <unistd.h>
-# include <stdbool.h>
-# include <limits.h>
-# include <stdlib.h>
+#include "philo.h"
 
-size_t	ft_strlen(const char *s);
-int		ft_atoi(const char *str);
-void	ft_free(void *ptr);
-bool	error_message(char *msg);
-
-#endif
+bool	ft_mutex_init(pthread_mutex_t *mutex, pthread_mutexattr_t *attr)
+{
+	if (pthread_mutex_init(mutex, attr) != 0)
+	{
+		error_message("mutex_init error\n");
+		return (false);
+	}
+	return (true);
+}

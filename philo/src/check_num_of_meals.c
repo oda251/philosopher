@@ -1,28 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_free.c                                          :+:      :+:    :+:   */
+/*   check_num_of_meals.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/19 19:15:36 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/21 03:40:38 by yoda             ###   ########.fr       */
+/*   Created: 2023/11/21 04:26:12 by yoda              #+#    #+#             */
+/*   Updated: 2023/11/21 04:30:16 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-bool	ft_free(void *ptr)
+bool	check_num_of_meals(t_global_data p)
 {
-	if (!ptr)
-		return (false);
-	free(ptr);
-	return (false);
-}
+	int	i;
+	int	done_count;
 
-bool	ft_free_two_val(void *ptr1, void *ptr2)
-{
-	ft_free(ptr1);
-	ft_free(ptr2);
+	i = 0;
+	while (i < p.num_of_philo)
+	{
+		if (p.philos[i].done == false)
+		{
+			pthread_mutex_lock(&(p.philos[i].meal));
+			if (p.philos[i].eat_count >= p.num_of_must_eat)
+			{
+				p.philos[i].done = true;
+				done_count++;
+			}
+			pthread_mutex_unlock(&(p.philos[i].meal));
+		}
+		else
+			done_count++;
+		i++;
+	}
+	if (done_count == p.num_of_philo)
+		return (true);
 	return (false);
 }

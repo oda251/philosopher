@@ -6,11 +6,11 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 20:28:13 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/19 18:42:10 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/21 03:40:18 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_utils.h"
+#include "philo.h"
 
 
 static int	ft_isdigit(char c)

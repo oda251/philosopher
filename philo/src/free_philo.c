@@ -6,15 +6,8 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 19:17:30 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/19 19:20:11 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/21 02:11:50 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-bool	free_philo(t_global_data *p)
-{
-	ft_free(p->tid);
-	ft_free(p->mutex);
-	return (false);
-}

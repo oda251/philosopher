@@ -6,18 +6,19 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 21:55:34 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/19 22:16:44 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/21 04:19:28 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-bool	put_status(suseconds_t start, int philo_id, char *status)
+bool	put_status(suseconds_t time, int philo_id, char *status)
 {
-	t_time	now;
+	t_time	tmp;
 
-	if (gettimeofday(&now, NULL) == -1)
+	if (time < 0 && gettimeofday(&tmp, NULL) == -1)
 		return (false);
-	printf("%ld %d %s\n", now.tv_usec - start, philo_id, status);
+	time = convert_time(tmp);
+	printf("%ld %d %s\n", time, philo_id, status);
 	return (true);
 }
