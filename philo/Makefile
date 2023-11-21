@@ -1,11 +1,12 @@
 NAME = philo
 SRC_FILES = main.c \
 	philo.c \
-	free_philo.c \
-	init_datas.c \
-	put_status.c
+	init_data.c \
+	check_num_of_meals.c
 UTIL_FILES = ft_atoi.c \
 	ft_strlen.c \
+	free_philo.c \
+	put_status.c \
 	error_handlers.c \
 	ft_free.c \
 	ft_mutex_init.c

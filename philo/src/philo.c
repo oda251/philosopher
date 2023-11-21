@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 18:54:54 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/21 04:32:28 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/22 02:23:26 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,47 +23,52 @@ void	*unit_philo(void *arg)
 	p = *(t_philo *)arg;
 	while (true)
 	{
-		pthread_mutex_lock(&(p.left));
-		pthread_mutex_lock(&(p.right));
-		if (gettimeofday(&time, NULL) == -1)
-			return ("gettimeofday error\n");
-		time_ms = convert_time(time);
-		pthread_mutex_lock(&(p.meal));
-		p.last_eat = time_ms;
-		pthread_mutex_unlock(&(p.meal));
+		if (eat(p, &time_ms) == false)
+			return (false);
+		if (get_mutex_bool(p.m_end, &(p.end_flag)) == true)
+		{
+			pthread_mutex_unlock(p.left);
+			pthread_mutex_unlock(p.right);
+			return (NULL);
+		}
 		put_status(time_ms, p.philo_id, TAKE_FORKS);
 		put_status(time_ms, p.philo_id, EATING);
 		usleep(p.time_to_eat * 1000);
-		pthread_mutex_unlock(&(p.left));
-		pthread_mutex_unlock(&(p.right));
+		pthread_mutex_unlock(p.left);
+		pthread_mutex_unlock(p.right);
 		if (put_status(-1, p.philo_id, SLEEPING) == false)
 			return ("gettimeofday error\n");
 		usleep(p.time_to_sleep * 1000);
 		if (put_status(-1, p.philo_id, THINKING) == false)
 			return ("gettimeofday error\n");
 	}
-	return ("SUCCESS");
+	return (NULL);
 }
 
 bool	monitoring(void	*arg)
 {
 	int					i;
-	t_time			time;
-	suseconds_t	time_ms;
+	t_global_data		*p;
+	t_time				time;
+	suseconds_t			time_ms;
 
-	i = 0;
+	p = (t_global_data *)arg;
 	while (true)
 	{
 		if (gettimeofday(&time, NULL) == -1)
 			return (error_message("gettimeofday error\n"));
 		time_ms = convert_time(time);
-		if (time_ms - p.philos[i].last_eat > p.time_to_die * 1000)
+		i = -1;
+		while (++i < p->num_of_philo)
 		{
-			if (put_status(time_ms, p.philos[i].philo_id, DIED) == false)
-				return (error_message("gettimeofday error\n"));
-			return (true);
+			if (is_dead(*p, i, time_ms) == true)
+			{
+				turn_true(p->m_end, &(p->end_flag));
+				put_status(time_ms, i, DIED);
+				break ;
+			}
 		}
-		if (check_num_of_meals(p) == true)
+		if (check_num_of_meals(*p) == true)
 			return (true);
 	}
 }
@@ -76,7 +81,7 @@ bool	philo(t_global_data p)
 	i = -1;
 	while (++i < p.num_of_philo)
 	{
-		if (pthread_mutex_init(&(p.mutex[i]), NULL))
+		if (pthread_mutex_init(p.fork[i], NULL))
 			return (error_message("mutex_init error\n"));
 	}
 	if (gettimeofday(&starttime, NULL) == -1)
@@ -89,6 +94,9 @@ bool	philo(t_global_data p)
 		pthread_create(&(p.philos[i].tid), NULL, unit_philo, &(p.philos[i]));
 	}
 	pthread_create(&(p.philos[0].tid), NULL, monitoring, &p);
+	pthread_mutex_lock(p.m_end);
+	p.end_flag = true;
+	pthread_mutex_unlock(p.m_end);
 	end_philo(p);
 	return (true);
 }
@@ -101,8 +109,8 @@ bool	end_philo(t_global_data p)
 	while (++i < p.num_of_philo)
 	{
 		pthread_join(p.philos[i].tid, NULL);
-		pthread_mutex_destroy(&(p.mutex[i]));
+		pthread_mutex_destroy(p.fork[i]);
 	}
-	ft_free_two_val(p.philos, p.mutex);
+	ft_free_two_val(p.philos, p.fork);
 	return (true);
 }
