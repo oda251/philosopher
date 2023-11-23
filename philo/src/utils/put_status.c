@@ -6,19 +6,18 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 21:55:34 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/21 04:19:28 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/24 01:45:52 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-bool	put_status(suseconds_t time, int philo_id, char *status)
+bool	put_status(ms time, int philo_id, char *status)
 {
-	t_time	tmp;
+	ms			tmp_ms;
 
-	if (time < 0 && gettimeofday(&tmp, NULL) == -1)
+	if (get_current_ms(&tmp_ms) == false)
 		return (false);
-	time = convert_time(tmp);
-	printf("%ld %d %s\n", time, philo_id, status);
+	printf("%.3lld %d %s\n", time - tmp_ms, philo_id, status);
 	return (true);
 }

@@ -1,25 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_actions.c                                    :+:      :+:    :+:   */
+/*   get_current_ms.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/22 01:55:28 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/24 01:30:24 by yoda             ###   ########.fr       */
+/*   Created: 2023/11/24 01:23:18 by yoda              #+#    #+#             */
+/*   Updated: 2023/11/24 01:25:42 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-bool	eat(t_philo p, ms *time_ms)
+bool	get_current_ms(ms *current_ms)
 {
-	pthread_mutex_lock(p.left);
-	pthread_mutex_lock(p.right);
-	if (get_current_ms(time_ms) == false)
+	t_time		tmp;
+
+	if (gettimeofday(&tmp, NULL) == -1)
 		return (false);
-	pthread_mutex_lock(p.m_meal);
-	p.last_eat = *time_ms;
-	pthread_mutex_unlock(p.m_meal);
+	*current_ms = convert_time(tmp);
 	return (true);
 }

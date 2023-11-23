@@ -1,40 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_num_of_meals.c                               :+:      :+:    :+:   */
+/*   mutex_destroy.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/21 04:26:12 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/22 01:21:08 by yoda             ###   ########.fr       */
+/*   Created: 2023/11/24 00:55:24 by yoda              #+#    #+#             */
+/*   Updated: 2023/11/24 01:07:44 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-bool	check_num_of_meals(t_global_data p)
+bool	mutex_destroy(pthread_mutex_t **mutex, int num)
 {
 	int	i;
-	int	done_count;
 
 	i = 0;
-	while (i < p.num_of_philo)
+	while (i < num)
 	{
-		if (p.philos[i].done == false)
-		{
-			pthread_mutex_lock(p.philos[i].m_meal);
-			if (p.philos[i].eat_count >= p.num_of_must_eat)
-			{
-				p.philos[i].done = true;
-				done_count++;
-			}
-			pthread_mutex_unlock(p.philos[i].m_meal);
-		}
-		else
-			done_count++;
+		pthread_mutex_destroy(mutex[i]);
 		i++;
 	}
-	if (done_count == p.num_of_philo)
-		return (true);
+	return (false);
+}
+
+bool	two_mutex_destroy(pthread_mutex_t **mutex1, pthread_mutex_t **mutex2, int num)
+{
+	mutex_destroy(mutex1, num);
+	mutex_destroy(mutex2, num);
 	return (false);
 }

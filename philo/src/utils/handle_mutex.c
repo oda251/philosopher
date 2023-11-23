@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 02:03:17 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/22 02:22:11 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/24 01:39:17 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,20 @@ bool	get_mutex_bool(pthread_mutex_t *m, bool *b)
 	return (ans);
 }
 
-bool	is_dead(t_global_data p, int i, suseconds_t time_ms)
+bool	is_dead(t_global_data *p, int i, ms time_ms)
 {
 	bool	ans;
 
-	pthread_mutex_lock(p.philos[i]->m_meal);
-	ans = time_ms - p.philos[i]->last_eat > p.time_to_die * 1000;
-	pthread_mutex_unlock(p.philos[i]->m_meal);
+	pthread_mutex_lock(p->philos[i]->m_meal);
+	if (time_ms - p->philos[i]->last_eat > p->time_to_die * 1000)
+	{
+		ans = true;
+		put_status(time_ms, p->philos[i]->philo_id, DIED);
+		turn_true(p->m_end, &p->end_flag);
+	}
+	else
+		ans = false;
+	pthread_mutex_unlock(p->philos[i]->m_meal);
 	return (ans);
 }
 

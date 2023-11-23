@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 15:52:26 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/21 03:08:52 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/24 01:15:32 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int	main(int argc, char **argv)
 
 	if (init_global_data(argc, argv, &p) == false)
 		return (error_message("invalid arguments"));
+	init_philos(p);
 	if (philo(p) == false)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);

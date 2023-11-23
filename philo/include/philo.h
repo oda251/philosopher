@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 15:53:55 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/22 02:22:27 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/24 01:38:52 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,19 +27,20 @@
 # define THINKING	"is thinking"
 # define DIED		"died"
 
+typedef long long		ms;
 typedef struct timeval	t_time;
 typedef struct s_philo
 {
 	int								philo_id;
 	pthread_mutex_t					*m_meal;
-	suseconds_t						last_eat;
+	ms								last_eat;
 	pthread_mutex_t					*m_end;
 	bool							*end_flag;
 	int								eat_count;
 	int								time_to_eat;
 	int								time_to_sleep;
 	int								time_to_die;
-	t_time							starttime;
+	ms								starttime;
 	pthread_t						tid;
 	pthread_mutex_t					*left;
 	pthread_mutex_t					*right;
@@ -52,30 +53,37 @@ typedef struct s_global_data
 	int								time_to_eat;
 	int								time_to_sleep;
 	int								num_of_must_eat;
+	bool							end_flag;
 	t_philo							**philos;
 	pthread_mutex_t					**fork;
 	pthread_mutex_t					*m_end;
-	bool							end_flag;
-	t_time							starttime;
+	pthread_mutex_t					**m_meal;
+	ms								starttime;
 }	t_global_data;
 // -------------------init-------------------
 bool				init_global_data(int argc, char **argv, t_global_data *p);
-bool				init_philo(t_global_data p, int count);
+bool				init_philos(t_global_data p);
 // -------------------philo-------------------
 bool				philo(t_global_data p);
-bool				eat(t_philo p, t_time *time)
-bool				check_num_of_meals(t_global_data p);
+bool				eat(t_philo p, ms *time_ms);
+bool				count_done(t_global_data p);
 // -------------------utils-------------------
 size_t				ft_strlen(const char *s);
 int					ft_atoi(const char *str);
 bool				ft_free(void *ptr);
+bool				mutex_destroy(pthread_mutex_t **mutex, int num);
+bool				two_mutex_destroy(pthread_mutex_t **mutex1,
+						pthread_mutex_t **mutex2, int num);
 bool				ft_free_two_val(void *ptr1, void *ptr2);
+bool				ft_free_three_val(void *ptr1, void *ptr2, void *ptr3);
+bool				ft_free_four_val(void *ptr1, void *ptr2, void *ptr3, void *ptr4);
 bool				error_message(char *msg);
-bool				put_status(suseconds_t time, int philo_id, char *status);
+bool				put_status(ms time, int philo_id, char *status);
 bool				ft_mutex_init(pthread_mutex_t *mutex, pthread_mutexattr_t *attr);
-long long			convert_time(t_time time);
+ms					convert_time(t_time time);
 bool				get_mutex_bool(pthread_mutex_t *m, bool *b);
-bool				is_dead(t_global_data p, int i, suseconds_t time_ms);
+bool				is_dead(t_global_data *p, int i, ms time_ms);
 bool				turn_true(pthread_mutex_t *m, bool *b);
+bool				get_current_ms(ms *time_ms);
 
 #endif

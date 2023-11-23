@@ -6,13 +6,13 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 04:14:11 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/21 04:14:50 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/24 01:20:39 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-long long	convert_time(t_time time)
+ms	convert_time(t_time time)
 {
 	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }
