@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 18:54:54 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/24 01:48:00 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/25 02:04:18 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	*monitoring(void	*arg)
 	p = (t_global_data *)arg;
 	while (true)
 	{
-		usleep(100);
+		usleep(1000);
 		if (get_current_ms(&time_ms) == false)
 			return ("gettimeofday error\n");
 		i = -1;
@@ -83,12 +83,9 @@ void	*monitoring(void	*arg)
 bool	philo(t_global_data p)
 {
 	int			i;
-	t_time		starttime;
 	pthread_t	m_tid;
 
-	if (gettimeofday(&starttime, NULL) == -1)
-		return (error_message("gettimeofday error\n"));
-	p.starttime = convert_time(starttime);
+	get_current_ms(&(p.starttime));
 	i = -1;
 	while (++i < p.num_of_philo)
 	{
