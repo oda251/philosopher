@@ -6,18 +6,18 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 21:55:34 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/24 01:45:52 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/25 02:22:36 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-bool	put_status(ms time, int philo_id, char *status)
+bool	put_status(ms starttime, int philo_id, char *status)
 {
-	ms			tmp_ms;
+	ms	time;
 
-	if (get_current_ms(&tmp_ms) == false)
+	if (get_current_ms(&time) == false)
 		return (false);
-	printf("%.3lld %d %s\n", time - tmp_ms, philo_id, status);
+	printf("%.3lld %d %s\n", time - starttime, philo_id, status);
 	return (true);
 }
