@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 18:54:54 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/25 03:53:45 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/29 17:33:39 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,11 @@ bool	end_philo(t_global_data p, pthread_t m_tid);
 void	*unit_philo(void *arg)
 {
 	t_philo			p;
-	ms				time_ms;
 
 	p = *(t_philo *)arg;
 	while (true)
 	{
-		if (eat(&p, &time_ms) == false)
+		if (start_eating(&p) == false)
 			return (false);
 		if (get_mutex_bool(p.m_end, p.end_flag) == true)
 		{

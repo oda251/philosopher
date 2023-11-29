@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 15:53:55 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/25 03:40:50 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/29 17:34:19 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ bool				init_global_data(int argc, char **argv, t_global_data *p);
 bool				init_philos(t_global_data p);
 // -------------------philo-------------------
 bool				philo(t_global_data p);
-bool				eat(t_philo *p, ms *time_ms);
+bool				start_eating(t_philo *p);
 bool				count_done(t_global_data p);
 // -------------------utils-------------------
 size_t				ft_strlen(const char *s);
