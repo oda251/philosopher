@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 03:08:54 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/24 01:44:43 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/29 19:13:32 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,32 +19,32 @@ static bool	init_g_data_sub(t_global_data *p)
 	p->end_flag = false;
 	p->m_end = malloc(sizeof(pthread_mutex_t));
 	p->philos = malloc(sizeof(t_philo *) * p->num_of_philo);
-	p->fork = malloc(sizeof(pthread_mutex_t *) * p->num_of_philo);
-	p->m_meal = malloc(sizeof(pthread_mutex_t *) * p->num_of_philo);
+	p->forks = malloc(sizeof(pthread_mutex_t *) * p->num_of_philo);
+	p->m_meals = malloc(sizeof(pthread_mutex_t *) * p->num_of_philo);
 	i = -1;
 	while (++i < p->num_of_philo)
 	{
 		p->philos[i] = malloc(sizeof(t_philo));
-		p->fork[i] = malloc(sizeof(pthread_mutex_t));
-		p->m_meal[i] = malloc(sizeof(pthread_mutex_t));
+		p->forks[i] = malloc(sizeof(pthread_mutex_t));
+		p->m_meals[i] = malloc(sizeof(pthread_mutex_t));
 	}
-	if (!p->philos || !p->fork)
-		return (ft_free_four_val(p->m_end, p->philos, p->fork, p->m_meal));
+	if (!p->philos || !p->forks)
+		return (ft_free_four_val(p->m_end, p->philos, p->forks, p->m_meals));
 	if (pthread_mutex_init(p->m_end, NULL))
 		return (free(p->m_end), false);
 	i = -1;
 	while (++i < p->num_of_philo)
 	{
-		if (pthread_mutex_init(p->fork[i], NULL))
-			return (mutex_destroy(p->fork, i),
+		if (pthread_mutex_init(p->forks[i], NULL))
+			return (mutex_destroy(p->forks, i),
 				pthread_mutex_destroy(p->m_end),
-				ft_free_four_val(p->m_end, p->philos, p->fork, p->m_meal),
+				ft_free_four_val(p->m_end, p->philos, p->forks, p->m_meals),
 				error_message("mutex_init error\n"));
-		if (pthread_mutex_init(p->m_meal[i], NULL))
-			return (two_mutex_destroy(p->fork, p->m_meal, i),
-				pthread_mutex_destroy(p->fork[i]),
+		if (pthread_mutex_init(p->m_meals[i], NULL))
+			return (two_mutex_destroy(p->forks, p->m_meals, i),
+				pthread_mutex_destroy(p->forks[i]),
 				pthread_mutex_destroy(p->m_end),
-				ft_free_four_val(p->m_end, p->philos, p->fork, p->m_meal),
+				ft_free_four_val(p->m_end, p->philos, p->forks, p->m_meals),
 				error_message("mutex_init error\n"));
 	}
 	return (true);
@@ -75,18 +75,12 @@ bool	init_global_data(int argc, char **argv, t_global_data *p)
 
 static bool	init_philo(t_global_data p, int count)
 {
-	p.philos[count]->m_meal = p.m_meal[count];
+	p.philos[count]->data = &p;
 	p.philos[count]->philo_id = count + 1;
-	p.philos[count]->time_to_die = p.time_to_die;
-	p.philos[count]->time_to_eat = p.time_to_eat;
-	p.philos[count]->time_to_sleep = p.time_to_sleep;
 	p.philos[count]->eat_count = 0;
-	p.philos[count]->starttime = p.starttime;
-	p.philos[count]->left = p.fork[count];
-	p.philos[count]->right = p.fork[(count + 1) % p.num_of_philo];
+	p.philos[count]->left = p.forks[count];
+	p.philos[count]->right = p.forks[(count + 1) % p.num_of_philo];
 	p.philos[count]->done = false;
-	p.philos[count]->end_flag = &(p.end_flag);
-	p.philos[count]->m_end = p.m_end;
 	return (true);
 }
 

@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 02:03:17 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/25 03:47:08 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/29 19:16:41 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ bool	is_dead(t_global_data *p, int i)
 	{
 		ans = true;
 		put_status(p->starttime, p->philos[i]->philo_id, DIED);
-		turn_true(p->m_end, &p->end_flag);
 	}
 	else
 		ans = false;

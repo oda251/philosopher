@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 15:53:55 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/29 17:34:19 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/29 19:15:59 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,23 +29,7 @@
 
 typedef long long		ms;
 typedef struct timeval	t_time;
-typedef struct s_philo
-{
-	int								philo_id;
-	pthread_mutex_t					*m_meal;
-	ms								last_eat;
-	pthread_mutex_t					*m_end;
-	bool							*end_flag;
-	int								eat_count;
-	int								time_to_eat;
-	int								time_to_sleep;
-	int								time_to_die;
-	ms								starttime;
-	pthread_t						tid;
-	pthread_mutex_t					*left;
-	pthread_mutex_t					*right;
-	bool							done;
-}	t_philo;
+typedef struct s_philo	t_philo;
 typedef struct s_global_data
 {
 	int								num_of_philo;
@@ -55,11 +39,23 @@ typedef struct s_global_data
 	int								num_of_must_eat;
 	bool							end_flag;
 	t_philo							**philos;
-	pthread_mutex_t					**fork;
+	pthread_mutex_t					**forks;
 	pthread_mutex_t					*m_end;
-	pthread_mutex_t					**m_meal;
+	pthread_mutex_t					**m_meals;
 	ms								starttime;
 }	t_global_data;
+typedef struct s_philo
+{
+	int								philo_id;
+	int								eat_count;
+	pthread_t						tid;
+	pthread_mutex_t					*left;
+	pthread_mutex_t					*right;
+	bool							done;
+	ms								last_eat;
+	pthread_mutex_t					*m_meal;
+	t_global_data					*data;
+}	t_philo;
 // -------------------init-------------------
 bool				init_global_data(int argc, char **argv, t_global_data *p);
 bool				init_philos(t_global_data p);
