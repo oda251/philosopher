@@ -6,13 +6,13 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 01:55:28 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/29 17:33:49 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/29 17:35:33 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-bool	eat(t_philo *p)
+bool	start_eating(t_philo *p)
 {
 	pthread_mutex_lock(p->left);
 	pthread_mutex_lock(p->right);
