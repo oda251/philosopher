@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 15:53:55 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/29 19:15:59 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/29 19:35:49 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ bool				put_status(ms starttime, int philo_id, char *status);
 bool				ft_mutex_init(pthread_mutex_t *mutex, pthread_mutexattr_t *attr);
 ms					convert_time(t_time time);
 bool				get_mutex_bool(pthread_mutex_t *m, bool *b);
-bool				is_dead(t_global_data *p, int i);
+bool				is_dead(t_philo *p);
 bool				turn_true(pthread_mutex_t *m, bool *b);
 bool				get_current_ms(ms *time_ms);
 

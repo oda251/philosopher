@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 03:08:54 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/29 19:13:32 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/29 19:41:46 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ bool	init_global_data(int argc, char **argv, t_global_data *p)
 static bool	init_philo(t_global_data p, int count)
 {
 	p.philos[count]->data = &p;
+	p.philos[count]->m_meal = p.m_meals[count];
+	p.philos[count]->last_eat = 0;
 	p.philos[count]->philo_id = count + 1;
 	p.philos[count]->eat_count = 0;
 	p.philos[count]->left = p.forks[count];

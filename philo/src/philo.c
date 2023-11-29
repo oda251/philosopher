@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 18:54:54 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/29 19:19:38 by yoda             ###   ########.fr       */
+/*   Updated: 2023/11/29 19:43:54 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void	*unit_philo(void *arg)
 {
 	t_philo			*p;
 
-	printf("unit_philo\n");
 	p = (t_philo *)arg;
 	while (true)
 	{
@@ -52,14 +51,13 @@ void	*monitoring(void	*arg)
 	int					i;
 	t_global_data		*p;
 
-	printf("moni\n");
 	p = (t_global_data *)arg;
 	while (true)
 	{
 		i = -1;
 		while (++i < p->num_of_philo)
 		{
-			if (is_dead(p, i) == true)
+			if (is_dead(p->philos[i]) == true)
 			{
 				turn_true(p->m_end, &p->end_flag);
 				return (NULL);
