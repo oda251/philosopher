@@ -1,19 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   put_status.c                                       :+:      :+:    :+:   */
+/*   validate_args.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/19 21:55:34 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/18 09:15:44 by yoda             ###   ########.fr       */
+/*   Created: 2023/11/21 03:08:54 by yoda              #+#    #+#             */
+/*   Updated: 2024/02/18 04:40:15 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-bool	put_status(ms passed_time, int philo_id, char *status)
+bool	validate_args(int argc, char **argv)
 {
-	printf("%.3lld %d %s\n", passed_time, philo_id, status);
+	if (!(argc == 5 || argc == 6))
+		return (false);
+	if (ft_atoi(argv[1]) < 1)
+		return (false);
+	if (ft_atoi(argv[2]) < 20 || ft_atoi(argv[3]) < 20 || ft_atoi(argv[4]) < 20)
+		return (false);
+	if (argc == 6 && ft_atoi(argv[5]) < 1)
+		return (false);
 	return (true);
 }

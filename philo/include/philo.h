@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 15:53:55 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/24 01:38:52 by yoda             ###   ########.fr       */
+/*   Updated: 2024/02/18 09:56:55 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,61 +29,78 @@
 
 typedef long long		ms;
 typedef struct timeval	t_time;
-typedef struct s_philo
+typedef struct s_philosopher
 {
-	int								philo_id;
-	pthread_mutex_t					*m_meal;
+	int								id;
+	t_common_data					*common;
+	pthread_mutex_t					m_last_eat;
 	ms								last_eat;
-	pthread_mutex_t					*m_end;
-	bool							*end_flag;
 	int								eat_count;
-	int								time_to_eat;
-	int								time_to_sleep;
-	int								time_to_die;
-	ms								starttime;
-	pthread_t						tid;
-	pthread_mutex_t					*left;
-	pthread_mutex_t					*right;
-	bool							done;
-}	t_philo;
-typedef struct s_global_data
+	pthread_mutex_t					*left_fork;
+	pthread_mutex_t					*right_fork;
+	pthread_mutex_t					*m_end_flag;
+	int								*end_flag;
+}	t_philosopher;
+
+typedef struct s_monitor
 {
-	int								num_of_philo;
-	int								time_to_die;
+	pthread_mutex_t					m_end_flag;
+	int								end_flag;
+}	t_monitor;
+
+typedef struct s_common_data
+{
+	ms								starttime;
+	int								num_of_philos;
 	int								time_to_eat;
 	int								time_to_sleep;
-	int								num_of_must_eat;
-	bool							end_flag;
-	t_philo							**philos;
-	pthread_mutex_t					**fork;
-	pthread_mutex_t					*m_end;
-	pthread_mutex_t					**m_meal;
-	ms								starttime;
-}	t_global_data;
+	int								time_to_die;
+	int								times_to_eat;
+}	t_common_data;
+
+typedef struct s_data
+{
+	t_common_data					common;
+	t_monitor						monitor;
+	pthread_t						monitor_tid;
+	pthread_t						*tid;
+	t_philosopher					*philos;
+	pthread_mutex_t					*forks;
+}	t_data;
 // -------------------init-------------------
-bool				init_global_data(int argc, char **argv, t_global_data *p);
-bool				init_philos(t_global_data p);
-// -------------------philo-------------------
-bool				philo(t_global_data p);
-bool				eat(t_philo p, ms *time_ms);
-bool				count_done(t_global_data p);
+bool	validate_args(int argc, char **argv);
+void	input_args(int argc, char **argv, t_common_data *common_data);
+bool	setup_data(t_data *data);
+bool	setup_philos(t_data *data);
+// -------------------game-------------------
+bool	game(t_data *data);
+void	*unit_philo(void *arg);
+void	*monitoring(void *arg);
+// -------------------acts-------------------
+bool	eat(t_philosopher *p);
+bool	sleep(t_philosopher *p);
+bool	think(t_philosopher *p);
 // -------------------utils-------------------
-size_t				ft_strlen(const char *s);
-int					ft_atoi(const char *str);
-bool				ft_free(void *ptr);
-bool				mutex_destroy(pthread_mutex_t **mutex, int num);
-bool				two_mutex_destroy(pthread_mutex_t **mutex1,
-						pthread_mutex_t **mutex2, int num);
-bool				ft_free_two_val(void *ptr1, void *ptr2);
-bool				ft_free_three_val(void *ptr1, void *ptr2, void *ptr3);
-bool				ft_free_four_val(void *ptr1, void *ptr2, void *ptr3, void *ptr4);
-bool				error_message(char *msg);
-bool				put_status(ms time, int philo_id, char *status);
-bool				ft_mutex_init(pthread_mutex_t *mutex, pthread_mutexattr_t *attr);
-ms					convert_time(t_time time);
-bool				get_mutex_bool(pthread_mutex_t *m, bool *b);
-bool				is_dead(t_global_data *p, int i, ms time_ms);
-bool				turn_true(pthread_mutex_t *m, bool *b);
-bool				get_current_ms(ms *time_ms);
+void	ft_bzero(void *s, size_t n);
+void	*ft_calloc(size_t count, size_t size);
+size_t	ft_strlen(const char *s);
+int		ft_atoi(const char *str);
+bool	mutex_init(pthread_mutex_t *mutex);
+bool	get_mutex_bool(pthread_mutex_t *m, bool *buf);
+bool	get_mutex_int(pthread_mutex_t *m, int *buf);
+ms		get_mutex_ms(pthread_mutex_t *m, ms *buf);
+void	set_mutex_int(pthread_mutex_t *m, int *buf, int val);
+void	set_mutex_bool(pthread_mutex_t *m, bool *buf, bool val);
+void	set_mutex_ms(pthread_mutex_t *m, ms *buf, ms val);
+void	end_game(t_data *data);
+void	end_game_unit(t_philosopher *philo);
+bool	error_message(char *msg);
+void	free_data(t_data *data, int setup_progress);
+bool	put_status(ms passed_time, int philo_id, char *status);
+ms		convert_time(t_time time);
+void	usleep_ms(ms time);
+bool	get_current_ms(ms *time_ms);
+bool	get_passed_time(t_common_data *common, ms *dest);
+bool	is_dead(t_data *data, int i, ms time);
 
 #endif

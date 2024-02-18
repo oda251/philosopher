@@ -1,45 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_free.c                                          :+:      :+:    :+:   */
+/*   ft_mutex_init.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/19 19:15:36 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/24 00:45:14 by yoda             ###   ########.fr       */
+/*   Created: 2023/11/21 03:36:54 by yoda              #+#    #+#             */
+/*   Updated: 2024/02/18 09:56:11 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-bool	ft_free(void *ptr)
+bool	mutex_init(pthread_mutex_t *mutex)
 {
-	if (!ptr)
+	if (pthread_mutex_init(mutex, NULL) != 0)
 		return (false);
-	free(ptr);
-	return (false);
-}
-
-bool	ft_free_two_val(void *ptr1, void *ptr2)
-{
-	ft_free(ptr1);
-	ft_free(ptr2);
-	return (false);
-}
-
-bool	ft_free_three_val(void *ptr1, void *ptr2, void *ptr3)
-{
-	ft_free(ptr1);
-	ft_free(ptr2);
-	ft_free(ptr3);
-	return (false);
-}
-
-bool	ft_free_four_val(void *ptr1, void *ptr2, void *ptr3, void *ptr4)
-{
-	ft_free(ptr1);
-	ft_free(ptr2);
-	ft_free(ptr3);
-	ft_free(ptr4);
-	return (false);
+	return (true);
 }
