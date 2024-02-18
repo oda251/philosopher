@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 03:08:54 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/18 10:14:41 by yoda             ###   ########.fr       */
+/*   Updated: 2024/02/18 13:38:32 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,15 @@
 
 static bool	setup_philo(t_data *data, int i)
 {
-	if (mutex_init(&(data->philos[i].m_last_eat)))
+	data->philos[i].m_last_eat = ft_calloc(1, sizeof(pthread_mutex_t));
+	if (!data->philos[i].m_last_eat)
 		return (
+			free_data(data, -1),
+			error_message("calloc error\n")
+		);
+	if (mutex_init(data->philos[i].m_last_eat) == false)
+		return (
+			free(data->philos[i].m_last_eat),
 			free_data(data, -1),
 			error_message("mutex_init error\n")
 		);

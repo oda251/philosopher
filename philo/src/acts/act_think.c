@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 09:24:35 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/18 10:10:36 by yoda             ###   ########.fr       */
+/*   Updated: 2024/02/18 13:48:58 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ bool	act_think(t_philosopher *p)
 
 	if (get_passed_time(p->common, &time) == false)
 		return (end_game_unit(p), error_message("gettimeofday error\n"));
-	if (get_mutex_int(p->m_end_flag, p->end_flag) >= p->common->num_of_philos)
+	if (put_status_if_not_end(p, time, THINKING) == false)
 		return (false);
 	put_status(time, p->id, THINKING);
 	return (true);

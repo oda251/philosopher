@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 15:53:55 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/18 10:12:02 by yoda             ###   ########.fr       */
+/*   Updated: 2024/02/18 13:47:40 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ typedef struct s_monitor
 {
 	pthread_mutex_t					m_end_flag;
 	int								end_flag;
+	pthread_mutex_t					**m_last_eat;
+	ms								*last_eat;
 }	t_monitor;
 
 typedef struct s_common_data
@@ -50,7 +52,7 @@ typedef struct s_philosopher
 {
 	int								id;
 	t_common_data					*common;
-	pthread_mutex_t					m_last_eat;
+	pthread_mutex_t					*m_last_eat;
 	ms								last_eat;
 	int								eat_count;
 	pthread_mutex_t					*left_fork;
@@ -102,5 +104,6 @@ ms		convert_time(t_time time);
 void	usleep_ms(ms time);
 bool	get_current_ms(ms *time_ms);
 bool	get_passed_time(t_common_data *common, ms *dest);
+bool	put_status_if_not_end(t_philosopher *p, ms passed_time, char *status);
 
 #endif

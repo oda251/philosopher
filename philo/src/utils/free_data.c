@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 05:17:11 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/18 09:32:55 by yoda             ###   ########.fr       */
+/*   Updated: 2024/02/18 13:38:21 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ void	free_philos(t_philosopher *philos)
 	i = 0;
 	while (philos[i].id != 0)
 	{
-		pthread_mutex_destroy(&(philos[i].m_last_eat));
+		pthread_mutex_destroy(philos[i].m_last_eat);
+		free(philos[i].m_last_eat);
 		i++;
 	}
 	free(philos);

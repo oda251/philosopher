@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 15:52:26 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/18 08:55:36 by yoda             ###   ########.fr       */
+/*   Updated: 2024/02/18 12:43:41 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int	main(int argc, char **argv)
 {
 	t_data	data;
 
+	ft_bzero(&data, sizeof(t_data));
 	if (validate_args(argc, argv) == false)
 		return (error_message("invalid arguments"), EXIT_FAILURE);
 	input_args(argc, argv, &(data.common));
