@@ -1,9 +1,9 @@
 NAME = philo
 
 ACT_DIR = acts/
-ACT_FILES = eat.c \
-	sleep.c \
-	think.c
+ACT_FILES = act_eat.c \
+	act_sleep.c \
+	act_think.c
 ACT_SRC = $(addprefix $(ACT_DIR), $(ACT_FILES))
 
 INIT_DIR = init/

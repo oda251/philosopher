@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 08:16:44 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/18 09:28:42 by yoda             ###   ########.fr       */
+/*   Updated: 2024/02/18 10:11:00 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@ void	*unit_philo(void *arg)
 	philo = (t_philosopher *)arg;
 	while (true)
 	{
-		if (eat(philo) == false)
+		if (act_eat(philo) == false)
 			return (NULL);
-		if (sleep(philo) == false)
+		if (act_sleep(philo) == false)
 			return (NULL);
-		if (think(philo) == false)
+		if (act_think(philo) == false)
 			return (NULL);
 	}
 	return (NULL);

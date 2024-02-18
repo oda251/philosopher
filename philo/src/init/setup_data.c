@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 03:08:54 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/18 08:56:43 by yoda             ###   ########.fr       */
+/*   Updated: 2024/02/18 10:14:04 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ bool	setup_data(t_data *data)
 	i = -1;
 	while (++i < data->common.num_of_philos)
 	{
-		if (ft_mutex_init(&(data->forks[i])))
+		if (mutex_init(&(data->forks[i])))
 			return (free_data(data, i), error_message("mutex_init error\n"));
 	}
-	if (ft_mutex_init(&(data->monitor.m_end_flag)))
+	if (mutex_init(&(data->monitor.m_end_flag)))
 		return (free_data(data, i), error_message("mutex_init error\n"));
 	return (true);
 }

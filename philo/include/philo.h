@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 15:53:55 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/18 09:56:55 by yoda             ###   ########.fr       */
+/*   Updated: 2024/02/18 10:12:02 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define PHILO_H
 
 # include <stdio.h>
+# include <stdint.h>
 # include <stdbool.h>
 # include <stdlib.h>
 # include <unistd.h>
@@ -29,19 +30,6 @@
 
 typedef long long		ms;
 typedef struct timeval	t_time;
-typedef struct s_philosopher
-{
-	int								id;
-	t_common_data					*common;
-	pthread_mutex_t					m_last_eat;
-	ms								last_eat;
-	int								eat_count;
-	pthread_mutex_t					*left_fork;
-	pthread_mutex_t					*right_fork;
-	pthread_mutex_t					*m_end_flag;
-	int								*end_flag;
-}	t_philosopher;
-
 typedef struct s_monitor
 {
 	pthread_mutex_t					m_end_flag;
@@ -57,6 +45,19 @@ typedef struct s_common_data
 	int								time_to_die;
 	int								times_to_eat;
 }	t_common_data;
+
+typedef struct s_philosopher
+{
+	int								id;
+	t_common_data					*common;
+	pthread_mutex_t					m_last_eat;
+	ms								last_eat;
+	int								eat_count;
+	pthread_mutex_t					*left_fork;
+	pthread_mutex_t					*right_fork;
+	pthread_mutex_t					*m_end_flag;
+	int								*end_flag;
+}	t_philosopher;
 
 typedef struct s_data
 {
@@ -77,9 +78,9 @@ bool	game(t_data *data);
 void	*unit_philo(void *arg);
 void	*monitoring(void *arg);
 // -------------------acts-------------------
-bool	eat(t_philosopher *p);
-bool	sleep(t_philosopher *p);
-bool	think(t_philosopher *p);
+bool	act_eat(t_philosopher *p);
+bool	act_sleep(t_philosopher *p);
+bool	act_think(t_philosopher *p);
 // -------------------utils-------------------
 void	ft_bzero(void *s, size_t n);
 void	*ft_calloc(size_t count, size_t size);
@@ -101,6 +102,5 @@ ms		convert_time(t_time time);
 void	usleep_ms(ms time);
 bool	get_current_ms(ms *time_ms);
 bool	get_passed_time(t_common_data *common, ms *dest);
-bool	is_dead(t_data *data, int i, ms time);
 
 #endif
