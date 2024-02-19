@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 05:17:11 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/19 21:30:09 by yoda             ###   ########.fr       */
+/*   Updated: 2024/02/19 16:27:11 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void	free_data(t_data *data, int setup_progress)
 {
 	int	i;
 
-	pthread_mutex_destroy(&(data->m_print));
 	if (setup_progress < 0)
 	{
 		free_monitor(data->monitor);

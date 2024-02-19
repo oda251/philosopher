@@ -6,18 +6,15 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 21:55:34 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/19 21:44:31 by yoda             ###   ########.fr       */
+/*   Updated: 2024/02/18 13:50:42 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-bool	put_status(pthread_mutex_t *m_print,
-	ms passed_time, int philo_id, char *status)
+bool	put_status(ms passed_time, int philo_id, char *status)
 {
-	pthread_mutex_lock(m_print);
 	printf("%.3lld %d %s\n", passed_time, philo_id, status);
-	pthread_mutex_unlock(m_print);
 	return (true);
 }
 
@@ -29,7 +26,7 @@ bool	put_status_if_not_end(t_philosopher *p, ms passed_time, char *status)
 		pthread_mutex_unlock(p->m_end_flag);
 		return (false);
 	}
-	put_status(p->m_print, passed_time, p->id, status);
+	put_status(passed_time, p->id, status);
 	pthread_mutex_unlock(p->m_end_flag);
 	return (true);
 }

@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 03:08:54 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/19 21:29:54 by yoda             ###   ########.fr       */
+/*   Updated: 2024/02/18 13:38:32 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ static bool	setup_philo(t_data *data, int i)
 			free_data(data, -1),
 			error_message("mutex_init error\n")
 		);
-	data->philos[i].m_print = &(data->m_print);
 	data->philos[i].id = i + 1;
 	data->philos[i].common = &(data->common);
 	data->philos[i].left_fork = &(data->forks[i]);

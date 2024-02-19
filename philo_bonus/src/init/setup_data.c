@@ -6,31 +6,17 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 03:08:54 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/19 21:28:12 by yoda             ###   ########.fr       */
+/*   Updated: 2024/02/19 20:33:46 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
 bool	setup_data(t_data *data)
 {
 	int	i;
 
-	data->forks = ft_calloc(
-		data->common.num_of_philos, sizeof(pthread_mutex_t));
-	data->tid = ft_calloc(
-		data->common.num_of_philos, sizeof(pthread_t));
-	if (!data->forks || !data->tid)
-		return (free_data(data, 0), error_message("calloc error\n"));
-	if (mutex_init(&(data->m_print)) == false)
-		return (free_data(data, 0), error_message("mutex_init error\n"));
-	i = -1;
-	while (++i < data->common.num_of_philos)
-	{
-		if (mutex_init(&(data->forks[i])) == false)
-			return (free_data(data, i), error_message("mutex_init error\n"));
-	}
-	if (mutex_init(&(data->monitor.m_end_flag)) == false)
-		return (free_data(data, i), error_message("mutex_init error\n"));
+	data->sem_forks = create_new_sem(SEM_FORKS, data->common.num_of_philos);
+	data->sem_full = create_new_sem(SEM_FULL, data->common.num_of_philos);
 	return (true);
 }

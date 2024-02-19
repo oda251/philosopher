@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.h                                            :+:      :+:    :+:   */
+/*   philo_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 15:53:55 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/19 21:26:18 by yoda             ###   ########.fr       */
+/*   Updated: 2024/02/19 20:34:05 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,17 @@
 # include <stdbool.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include <pthread.h>
+# include <semaphore.h>
 # include <sys/time.h>
 # include <string.h>
 # include <limits.h>
-# define TAKE_FORKS	"has taken a fork"
-# define EATING		"is eating"
-# define SLEEPING	"is sleeping"
-# define THINKING	"is thinking"
-# define DIED		"died"
+# define TAKE_FORKS		"has taken a fork"
+# define EATING			"is eating"
+# define SLEEPING		"is sleeping"
+# define THINKING		"is thinking"
+# define DIED			"died"
+# define SEM_FORKS		"/philo_forks"
+# define SEM_FULL		"/philo_full"
 
 typedef long long		ms;
 typedef struct timeval	t_time;
@@ -55,22 +57,16 @@ typedef struct s_philosopher
 	pthread_mutex_t					*m_last_eat;
 	ms								last_eat;
 	int								eat_count;
-	pthread_mutex_t					*left_fork;
-	pthread_mutex_t					*right_fork;
 	pthread_mutex_t					*m_end_flag;
 	int								*end_flag;
-	pthread_mutex_t					*m_print;
 }	t_philosopher;
 
 typedef struct s_data
 {
 	t_common_data					common;
-	t_monitor						monitor;
-	pthread_t						monitor_tid;
-	pthread_t						*tid;
 	t_philosopher					*philos;
-	pthread_mutex_t					*forks;
-	pthread_mutex_t					m_print;
+	sem_t							*sem_forks;
+	sem_t							*sem_full;
 }	t_data;
 // -------------------init-------------------
 bool	validate_args(int argc, char **argv);
@@ -86,6 +82,8 @@ bool	act_eat(t_philosopher *p);
 bool	act_sleep(t_philosopher *p);
 bool	act_think(t_philosopher *p);
 // -------------------utils-------------------
+void	exit_with_message(char *msg);
+sem_t	*create_new_sem(char *name, int value);
 void	ft_bzero(void *s, size_t n);
 void	*ft_calloc(size_t count, size_t size);
 size_t	ft_strlen(const char *s);
