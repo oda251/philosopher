@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 07:43:05 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/18 13:54:31 by yoda             ###   ########.fr       */
+/*   Updated: 2024/02/19 16:25:56 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,8 @@ static bool	is_dead(t_data *data, int i)
 		return (end_game(data), error_message("gettimeofday error\n"), true);
 	if (time - last_eat >= data->common.time_to_die)
 	{
-		printf("ovvvvvvvvvvvvvvvvvver\n");
 		end_game(data);
-		put_status(time - last_eat, i + 1, DIED);
+		put_status(time - data->common.starttime, i + 1, DIED);
 		return (true);
 	}
 	return (false);
