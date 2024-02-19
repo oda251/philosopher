@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 18:54:54 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/18 13:18:25 by yoda             ###   ########.fr       */
+/*   Updated: 2024/02/20 02:35:59 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ bool	game(t_data *data)
 	while (i < data->common.num_of_philos)
 	{
 		((data->philos)[i]).last_eat = data->common.starttime;
-		if (pthread_create(&(data->tid[i]), NULL, unit_philo, &((data->philos)[i])) != 0)
+		if (pthread_create(&(data->tid[i]), NULL,
+			unit_philo, &((data->philos)[i])) != 0)
 			return (end_game(data), error_message("pthread_create error\n"));
 		i++;
 	}

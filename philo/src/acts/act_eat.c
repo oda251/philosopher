@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 01:55:28 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/18 13:41:18 by yoda             ###   ########.fr       */
+/*   Updated: 2024/02/20 02:57:47 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static bool	update_status(t_philosopher *p)
 {
-	ms	time;
+	t_ms	time;
 
 	if (get_current_ms(&time) == false)
 		return (end_game_unit(p), error_message("gettimeofday error"), false);
@@ -23,15 +23,20 @@ static bool	update_status(t_philosopher *p)
 	(p->eat_count)++;
 	pthread_mutex_lock(p->m_end_flag);
 	if (p->eat_count == p->common->times_to_eat)
-		*(p->end_flag) += 1;
+		(*(p->end_flag))++;
+	if (*(p->end_flag) >= p->common->num_of_philos)
+	{
+		pthread_mutex_unlock(p->m_end_flag);
+		return (false);
+	}
+	put_status(p->m_print, time, p->id, TAKE_FORKS);
+	put_status(p->m_print, time, p->id, EATING);
 	if (*(p->end_flag) >= p->common->num_of_philos)
 	{
 		pthread_mutex_unlock(p->m_end_flag);
 		return (false);
 	}
 	pthread_mutex_unlock(p->m_end_flag);
-	put_status(time, p->id, TAKE_FORKS);
-	put_status(time, p->id, EATING);
 	return (true);
 }
 

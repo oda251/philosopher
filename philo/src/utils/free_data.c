@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 05:17:11 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/19 21:30:09 by yoda             ###   ########.fr       */
+/*   Updated: 2024/02/20 03:05:00 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,21 +26,12 @@ void	free_philos(t_philosopher *philos, int size)
 	free(philos);
 }
 
-void	free_monitor(t_monitor monitor)
-{
-	pthread_mutex_destroy(&(monitor.m_end_flag));
-}
-
 void	free_data(t_data *data, int setup_progress)
 {
 	int	i;
 
-	pthread_mutex_destroy(&(data->m_print));
-	if (setup_progress < 0)
-	{
-		free_monitor(data->monitor);
-		setup_progress = data->common.num_of_philos;
-	}
+	if (data->tid)
+		free(data->tid);
 	if (data->forks)
 	{
 		i = 0;
@@ -50,6 +41,14 @@ void	free_data(t_data *data, int setup_progress)
 			i++;
 		}
 		free(data->forks);
+	}
+	if (setup_progress == -2)
+		return ;
+	pthread_mutex_destroy(&(data->m_print));
+	if (setup_progress < 0)
+	{
+		pthread_mutex_destroy(&(data->m_end_flag));
+		setup_progress = data->common.num_of_philos;
 	}
 	if (data->philos)
 		free_philos(data->philos, data->common.num_of_philos);

@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 02:03:17 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/18 13:11:58 by yoda             ###   ########.fr       */
+/*   Updated: 2024/02/20 02:54:59 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ bool	get_mutex_int(pthread_mutex_t *m, int *buf)
 	return (ans);
 }
 
-ms		get_mutex_ms(pthread_mutex_t *m, ms *buf)
+t_ms	get_mutex_ms(pthread_mutex_t *m, t_ms *buf)
 {
-	ms	ans;
+	t_ms	ans;
 
 	pthread_mutex_lock(m);
 	ans = *buf;
