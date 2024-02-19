@@ -6,17 +6,40 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 03:08:54 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/18 10:18:46 by yoda             ###   ########.fr       */
+/*   Updated: 2024/02/19 16:32:58 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+bool	is_positive_number(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] < '0' || str[i] > '9')
+			return (false);
+		i++;
+	}
+	return (true);
+}
+
 bool	validate_args(int argc, char **argv)
 {
+	int	i;
+
 	if (!(argc == 5 || argc == 6))
 		return (false);
-	if (ft_atoi(argv[1]) < 1)
+	i = 1;
+	while (i < argc)
+	{
+		if (is_positive_number(argv[i]) == false)
+			return (false);
+		i++;
+	}
+	if (ft_atoi(argv[1]) < 1 || 200 < ft_atoi(argv[1]))
 		return (false);
 	if (ft_atoi(argv[2]) < 10 || ft_atoi(argv[3]) < 10 || ft_atoi(argv[4]) < 10)
 		return (false);

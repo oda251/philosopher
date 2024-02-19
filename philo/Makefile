@@ -61,6 +61,7 @@ test: $(SRC)
 	$(CC) $(CFLAGS) $(TESTFLAGS) $(INCLUDES) $(SRC) $(UTIL) -o $(NAME)
 
 clean:
+	rm -rf $(NAME).dSYM
 
 fclean: clean
 	rm -f $(NAME)
