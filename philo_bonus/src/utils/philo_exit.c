@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 05:17:11 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/20 04:08:46 by yoda             ###   ########.fr       */
+/*   Updated: 2024/02/21 02:45:03 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,10 @@ void	kill_all_philos(t_data *data)
 	i = 0;
 	while (i < data->common.num_of_philos)
 	{
-		if (data->philos[i].pid > 0)
-			kill(data->philos[i].pid, SIGKILL);
+		if (data->philos_pid[i] > 0)
+			kill(data->philos_pid[i], SIGKILL);
+		else
+			break ;
 		i++;
 	}
 }
@@ -41,8 +43,9 @@ void	main_exit(t_data *data, int status)
 		i = 0;
 		while (i < data->common.num_of_philos)
 		{
-			sem_end(data->philos[i].s_eat_count,
-					data->philos[i].sem_name);
+			if (data->philos[i].sem_name)
+				sem_end(data->philos[i].s_last_eat,
+						data->philos[i].sem_name);
 			i++;
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 15:52:26 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/20 03:23:26 by yoda             ###   ########.fr       */
+/*   Updated: 2024/02/21 02:48:37 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,10 @@ int	main(int argc, char **argv)
 	if (validate_args(argc, argv) == false)
 		return (error_message("invalid arguments"), EXIT_FAILURE);
 	input_args(argc, argv, &(data.common));
-	if (setup_data(&data) == false)
-		return (EXIT_FAILURE);
-	if (setup_philos(&data) == false)
-		return (EXIT_FAILURE);
+	setup_data(&data, data.common);
+	setup_philos(&data);
 	if (game(&data) == false)
-		return (EXIT_FAILURE);
-	free_data(&data, -1);
-	return (EXIT_SUCCESS);
+		main_exit(&data, EXIT_FAILURE);
+	main_exit(&data, EXIT_SUCCESS);
+	return (EXIT_SUCCESS);		
 }

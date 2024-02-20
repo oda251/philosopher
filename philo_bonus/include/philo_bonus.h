@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 15:53:55 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/20 04:08:27 by yoda             ###   ########.fr       */
+/*   Updated: 2024/02/21 02:54:08 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <semaphore.h>
+# include <pthread.h>
 # include <sys/time.h>
 # include <signal.h>
 # include <string.h>
@@ -32,7 +33,7 @@
 # define SEM_FORKS		"/philo_forks"
 # define SEM_PRINT		"/philo_print"
 # define SEM_FULL		"/philo_full"
-# define SEM_PHILO_BASE	"/philo_eat_count_"
+# define SEM_UNIT_BASE	"/philo_unit_"
 # define SEM_DEAD		"/philo_dead"
 
 
@@ -50,16 +51,17 @@ typedef struct s_common_data
 typedef struct s_philosopher
 {
 	int								id;
-	pid_t							*pid;
+	pid_t							pid;
 	t_common_data					*common;
+	char							*sem_name;
+	sem_t							*s_last_eat;
 	t_ms							last_eat;
 	sem_t							*s_waiter;
 	sem_t							*s_forks;
 	sem_t							*s_print;
 	sem_t							*s_full;
-	char							*sem_name;
-	sem_t							*s_eat_count;
 	sem_t							*s_dead;
+	tid_t							death_monitor;
 }	t_philosopher;
 typedef struct s_data
 {
@@ -71,12 +73,14 @@ typedef struct s_data
 	sem_t							*s_print;
 	sem_t							*s_full;
 	sem_t							*s_dead;
+	tid_t							death_monitor;
+	tid_t							full_monitor;
 }	t_data;
 // -------------------init-------------------
 bool	validate_args(int argc, char **argv);
 void	input_args(int argc, char **argv, t_common_data *common_data);
-bool	setup_data(t_data *data, t_common_data common);
-bool	setup_philos(t_data *data);
+void	setup_data(t_data *data, t_common_data common);
+void	setup_philos(t_data *data);
 // -------------------game-------------------
 bool	game(t_data *data);
 void	*unit_philo(void *arg);
@@ -88,13 +92,12 @@ bool	act_think(t_philosopher *p);
 // -------------------utils-------------------
 bool	sem_create(sem_t *sem, char *name, int value);
 bool	sem_kill(sem_t *sem, char *name);
-void	kill_all_sems_exit(t_data *data, int status);
+void	kill_all_philos(t_data *data);
+void	main_exit(t_data *data, int status);
 void	ft_bzero(void *s, size_t n);
 void	*ft_calloc(size_t count, size_t size);
 size_t	ft_strlen(const char *s);
 int		ft_atoi(const char *str);
-void	end_game(t_data *data);
-void	end_game_unit(t_philosopher *philo);
 bool	error_message(char *msg);
 void	free_data(t_data *data, int setup_progress);
 bool	put_status(pthread_mutex_t *m_print,
