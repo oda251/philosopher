@@ -6,11 +6,11 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 15:52:26 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/18 12:43:41 by yoda             ###   ########.fr       */
+/*   Updated: 2024/02/20 03:23:26 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
 int	main(int argc, char **argv)
 {

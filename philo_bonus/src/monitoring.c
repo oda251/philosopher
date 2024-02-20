@@ -6,24 +6,25 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 07:43:05 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/20 02:40:59 by yoda             ###   ########.fr       */
+/*   Updated: 2024/02/20 02:55:41 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static bool	is_dead(t_data *data, t_philosopher *p)
+static bool	is_dead(t_data *data, t_philosopher *philo)
 {
-	ms	last_eat;
-	ms	time;
+	t_ms	last_eat;
+	t_ms	time;
 
-	last_eat = get_mutex_ms(p->m_last_eat, &(p->last_eat));
+	last_eat = get_mutex_ms(philo->m_last_eat, &(philo->last_eat));
 	if (get_current_ms(&time) == false)
 		return (end_game(data), error_message("gettimeofday error\n"), true);
 	if (time - last_eat >= data->common.time_to_die)
 	{
 		end_game(data);
-		put_status(time - data->common.starttime, p->id, DIED);
+		time -= data->common.starttime;
+		put_status(&(data->m_print), time, philo->id, DIED);
 		return (true);
 	}
 	return (false);

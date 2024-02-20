@@ -1,55 +1,50 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_data.c                                        :+:      :+:    :+:   */
+/*   philo_exit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 05:17:11 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/19 16:27:11 by yoda             ###   ########.fr       */
+/*   Updated: 2024/02/20 04:08:46 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
-void	free_philos(t_philosopher *philos, int size)
+void	kill_all_philos(t_data *data)
 {
 	int	i;
 
+	if (!data->philos)
+		return ;
 	i = 0;
-	while (i < size && philos[i].id != 0)
+	while (i < data->common.num_of_philos)
 	{
-		pthread_mutex_destroy(philos[i].m_last_eat);
-		free(philos[i].m_last_eat);
+		if (data->philos[i].pid > 0)
+			kill(data->philos[i].pid, SIGKILL);
 		i++;
 	}
-	free(philos);
 }
 
-void	free_monitor(t_monitor monitor)
-{
-	pthread_mutex_destroy(&(monitor.m_end_flag));
-}
-
-void	free_data(t_data *data, int setup_progress)
+void	main_exit(t_data *data, int status)
 {
 	int	i;
 
-	if (setup_progress < 0)
-	{
-		free_monitor(data->monitor);
-		setup_progress = data->common.num_of_philos;
-	}
-	if (data->forks)
+	sem_end(data->s_forks, SEM_FORKS);
+	sem_end(data->s_print, SEM_PRINT);
+	sem_end(data->s_full, SEM_FULL);
+	sem_end(data->s_waiter, SEM_WAITER);
+	sem_end(data->s_dead, SEM_DEAD);
+	if (data->philos)
 	{
 		i = 0;
-		while (i < setup_progress)
+		while (i < data->common.num_of_philos)
 		{
-			pthread_mutex_destroy(&(data->forks[i]));
+			sem_end(data->philos[i].s_eat_count,
+					data->philos[i].sem_name);
 			i++;
 		}
-		free(data->forks);
 	}
-	if (data->philos)
-		free_philos(data->philos, data->common.num_of_philos);
+	exit(status);
 }

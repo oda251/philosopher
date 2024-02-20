@@ -5,20 +5,29 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/19 20:31:58 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/19 21:16:46 by yoda             ###   ########.fr       */
+/*   Created: 2024/02/20 03:19:25 by yoda              #+#    #+#             */
+/*   Updated: 2024/02/20 03:57:45 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-sem_t	*create_new_sem(char *name, int value)
+bool	sem_create(sem_t *sem, char *name, int value)
 {
-	sem_t	*sem;
-
 	sem_unlink(name);
-	sem = sem_open(name, O_CREAT, 0644, value);
+	sem = sem_open(name, O_CREAT | O_EXCL, 0644, value);
 	if (sem == SEM_FAILED)
-		exit_with_message("sem_open error\n");
-	return (sem);
+		return (false);
+	return (true);
+}
+
+bool	sem_kill(sem_t *sem, char *name)
+{
+	if (sem == SEM_FAILED)
+		return (true);
+	if (sem_close(sem) == -1)
+		return (false);
+	if (sem_unlink(name) == -1)
+		return (false);
+	return (true);
 }
