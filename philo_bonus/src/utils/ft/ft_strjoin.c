@@ -1,25 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   act_think.c                                        :+:      :+:    :+:   */
+/*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/18 09:24:35 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/21 14:31:14 by yoda             ###   ########.fr       */
+/*   Created: 2023/10/02 18:11:14 by misuzuki          #+#    #+#             */
+/*   Updated: 2024/02/21 13:47:07 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-void	act_think(t_philosopher *p)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	t_ms	time;
+	char	*dest;
+	size_t	i;
+	size_t	total;
 
-	if (get_passed_time(p->common, &time) == false)
+	if (s1 == NULL || s2 == NULL)
+		return (NULL);
+	total = ft_strlen(s1) + ft_strlen(s2);
+	dest = malloc((1 + total) * sizeof(char));
+	if (dest == NULL)
+		return (NULL);
+	i = 0;
+	while (*s1)
 	{
-		error_message("gettimeofday error");
-		exit(EXIT_FAILURE);
+		dest[i] = *s1;
+		s1++;
+		i++;
 	}
-	put_status(p->sems->s_print, time, p->id, THINKING);
+	while (*s2)
+	{
+		dest[i] = *s2;
+		s2++;
+		i++;
+	}
+	dest[i] = '\0';
+	return (dest);
 }

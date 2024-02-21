@@ -6,60 +6,43 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 01:55:28 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/20 02:57:47 by yoda             ###   ########.fr       */
+/*   Updated: 2024/02/21 14:51:23 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
-static bool	update_status(t_philosopher *p)
+static void	update_status(t_philosopher *p)
 {
-	t_ms	time;
+	t_ms			time;
+	t_shared_sems	*sems;
 
+	sems = p->sems;
 	if (get_current_ms(&time) == false)
-		return (end_game_unit(p), error_message("gettimeofday error"), false);
-	set_mutex_ms(p->m_last_eat, &(p->last_eat), time);
+	{
+		error_message("gettimeofday error");
+		exit(EXIT_FAILURE);
+	}
+	set_sem_ms(p->s_last_eat, &(p->last_eat), time);
 	time -= p->common->starttime;
 	(p->eat_count)++;
-	pthread_mutex_lock(p->m_end_flag);
 	if (p->eat_count == p->common->times_to_eat)
-		(*(p->end_flag))++;
-	if (*(p->end_flag) >= p->common->num_of_philos)
-	{
-		pthread_mutex_unlock(p->m_end_flag);
-		return (false);
-	}
-	put_status(p->m_print, time, p->id, TAKE_FORKS);
-	put_status(p->m_print, time, p->id, EATING);
-	if (*(p->end_flag) >= p->common->num_of_philos)
-	{
-		pthread_mutex_unlock(p->m_end_flag);
-		return (false);
-	}
-	pthread_mutex_unlock(p->m_end_flag);
-	return (true);
+		sem_post(sems->s_full);
+	put_status(sems->s_print, time, p->id, TAKE_FORKS);
+	put_status(sems->s_print, time, p->id, EATING);
 }
 
-bool	act_eat(t_philosopher *p)
+void	act_eat(t_philosopher *p)
 {
-	if (p->id % 2 == 0)
-	{
-		pthread_mutex_lock(p->left_fork);
-		pthread_mutex_lock(p->right_fork);
-	}
-	else
-	{
-		pthread_mutex_lock(p->right_fork);
-		pthread_mutex_lock(p->left_fork);
-	}
-	if (update_status(p) == false)
-	{
-		pthread_mutex_unlock(p->left_fork);
-		pthread_mutex_unlock(p->right_fork);
-		return (false);
-	}
+	t_shared_sems	*sems;
+
+	sems = p->sems;
+	sem_wait(sems->s_waiter);
+	sem_wait(sems->s_forks);
+	sem_wait(sems->s_forks);
+	update_status(p);
 	usleep_ms(p->common->time_to_eat);
-	pthread_mutex_unlock(p->left_fork);
-	pthread_mutex_unlock(p->right_fork);
-	return (true);
+	sem_post(sems->s_forks);
+	sem_post(sems->s_forks);
+	sem_post(sems->s_waiter);
 }

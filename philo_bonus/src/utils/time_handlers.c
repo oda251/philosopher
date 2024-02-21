@@ -6,11 +6,11 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 01:23:18 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/20 02:55:21 by yoda             ###   ########.fr       */
+/*   Updated: 2024/02/21 13:24:56 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
 bool	get_current_ms(t_ms *current_ms)
 {

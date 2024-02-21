@@ -1,18 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   game.c                                             :+:      :+:    :+:   */
+/*   simulation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 18:54:54 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/21 02:55:43 by yoda             ###   ########.fr       */
+/*   Updated: 2024/02/21 14:56:16 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-bool	game(t_data *data)
+int	wait_all_processes(t_data *data);
+
+int	simulation(t_data *data)
 {
 	int	i;
 
@@ -29,9 +31,29 @@ bool	game(t_data *data)
 			unit_philo(&((data->philos)[i]));
 		i++;
 	}
-	if (pthread_create(&(data->death_monitor), NULL, death_monitor, data) != 0)
-		return (kill_all_philos(data), error_message("pthread_create error\n"));
-	if (pthread_create(&(data->full_monitor), NULL, full_monitor, data) != 0)
-		return (kill_all_philos(data), error_message("pthread_create error\n"));
-	return (true);
+	init_child_process(&(data->full_monitor), full_monitoring, data);
+	return (wait_all_processes(data));
+}
+
+int	wait_all_processes(t_data *data)
+{
+	int	i;
+	int	tmp;
+	int	status;
+
+	i = 0;
+	status = 0;
+	while (i < data->common.num_of_philos + 1)
+	{
+		waitpid(-1, &tmp, 0);
+		if (errno == ECHILD)
+			break ;
+		if (WIFEXITED(status))
+		{
+			kill_all_philos(data);
+			status = WEXITSTATUS(status);
+		}
+		i++;
+	}
+	return (status);
 }

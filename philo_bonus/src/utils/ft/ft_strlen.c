@@ -6,11 +6,11 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 18:26:23 by yoda              #+#    #+#             */
-/*   Updated: 2023/11/21 03:40:48 by yoda             ###   ########.fr       */
+/*   Updated: 2024/02/21 13:25:43 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
 size_t	ft_strlen(const char *s)
 {

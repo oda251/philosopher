@@ -6,11 +6,11 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 17:07:18 by misuzuki          #+#    #+#             */
-/*   Updated: 2024/02/20 02:52:39 by yoda             ###   ########.fr       */
+/*   Updated: 2024/02/21 13:25:26 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
 void	ft_bzero(void *s, size_t n)
 {

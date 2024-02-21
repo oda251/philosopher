@@ -17,18 +17,18 @@ UTILS_FT_DIR = ft/
 UTILS_FT_FILES = ft_atoi.c \
 	ft_bzero.c \
 	ft_calloc.c \
-	ft_strlen.c
+	ft_strlen.c \
+	ft_itoa.c \
+	ft_strjoin.c
 UTILS_FT_SRC = $(addprefix $(UTILS_FT_DIR), $(UTILS_FT_FILES))
 
 UTIL_DIR = utils/
 UTIL_FILES = $(UTILS_FT_SRC) \
-	end_game.c \
 	error_handlers.c \
-	free_data.c \
-	get_mutex.c \
-	mutex_init.c \
+	init_child_process.c \
+	philo_exit.c \
 	put_status.c \
-	set_mutex.c \
+	sem_handlers.c \
 	time_handlers.c
 UTILS_SRC = $(addprefix $(UTIL_DIR), $(UTIL_FILES))
 
@@ -36,9 +36,9 @@ SRC_DIR = ./src/
 SRC_FILES = $(ACT_SRC) \
 	$(INIT_SRC) \
 	$(UTILS_SRC) \
-	game.c \
 	main.c \
 	monitoring.c \
+	simulation.c \
 	unit_philo.c
 SRC = $(addprefix $(SRC_DIR), $(SRC_FILES))
 

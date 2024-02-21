@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 15:53:55 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/21 02:54:08 by yoda             ###   ########.fr       */
+/*   Updated: 2024/02/21 14:50:08 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@
 # include <signal.h>
 # include <string.h>
 # include <limits.h>
+# include <fcntl.h>
+# include <errno.h>
+# include <sys/wait.h>
 # define TAKE_FORKS		"has taken a fork"
 # define EATING			"is eating"
 # define SLEEPING		"is sleeping"
@@ -48,6 +51,13 @@ typedef struct s_common_data
 	int								time_to_die;
 	int								times_to_eat;
 }	t_common_data;
+typedef struct s_shared_sems
+{
+	sem_t							*s_waiter;
+	sem_t							*s_forks;
+	sem_t							*s_print;
+	sem_t							*s_full;
+}	t_shared_sems;
 typedef struct s_philosopher
 {
 	int								id;
@@ -56,56 +66,50 @@ typedef struct s_philosopher
 	char							*sem_name;
 	sem_t							*s_last_eat;
 	t_ms							last_eat;
-	sem_t							*s_waiter;
-	sem_t							*s_forks;
-	sem_t							*s_print;
-	sem_t							*s_full;
-	sem_t							*s_dead;
-	tid_t							death_monitor;
+	t_shared_sems					*sems;
+	int 							eat_count;
 }	t_philosopher;
 typedef struct s_data
 {
 	t_common_data					common;
 	pid_t							*philos_pid;
 	t_philosopher					*philos;
-	sem_t							*s_waiter;
-	sem_t							*s_forks;
-	sem_t							*s_print;
-	sem_t							*s_full;
-	sem_t							*s_dead;
-	tid_t							death_monitor;
-	tid_t							full_monitor;
+	t_shared_sems					sems;
+	pid_t							full_monitor;
 }	t_data;
 // -------------------init-------------------
 bool	validate_args(int argc, char **argv);
 void	input_args(int argc, char **argv, t_common_data *common_data);
-void	setup_data(t_data *data, t_common_data common);
+void	setup_data(t_data *data, t_common_data common, t_shared_sems *sems);
 void	setup_philos(t_data *data);
 // -------------------game-------------------
-bool	game(t_data *data);
+int		simulation(t_data *data);
 void	*unit_philo(void *arg);
-void	*monitoring(void *arg);
+void	full_monitoring(t_data *data);
+void	*unit_monitoring(void *arg);
 // -------------------acts-------------------
-bool	act_eat(t_philosopher *p);
-bool	act_sleep(t_philosopher *p);
-bool	act_think(t_philosopher *p);
+void	act_eat(t_philosopher *p);
+void	act_sleep(t_philosopher *p);
+void	act_think(t_philosopher *p);
 // -------------------utils-------------------
-bool	sem_create(sem_t *sem, char *name, int value);
-bool	sem_kill(sem_t *sem, char *name);
+void	init_child_process(pid_t *pid, void (*func)(t_data *), t_data *data);
 void	kill_all_philos(t_data *data);
 void	main_exit(t_data *data, int status);
-void	ft_bzero(void *s, size_t n);
-void	*ft_calloc(size_t count, size_t size);
-size_t	ft_strlen(const char *s);
-int		ft_atoi(const char *str);
 bool	error_message(char *msg);
-void	free_data(t_data *data, int setup_progress);
-bool	put_status(pthread_mutex_t *m_print,
-			t_ms passed_time, int philo_id, char *status);
+bool	sem_create(sem_t **sem, char *name, int value);
+bool	sem_kill(sem_t *sem, char *name);
+int		get_sem_ms(sem_t *sem, t_ms *time);
+void	set_sem_ms(sem_t *sem, t_ms *dest, t_ms val);
+bool	put_status(sem_t *s_print, t_ms passed_time, int philo_id, char *status);
 t_ms	convert_time(t_time time);
 void	usleep_ms(t_ms time);
 bool	get_current_ms(t_ms *time_ms);
 bool	get_passed_time(t_common_data *common, t_ms *dest);
-bool	put_status_if_not_end(t_philosopher *p, t_ms passed_time, char *status);
+void	ft_bzero(void *s, size_t n);
+void	*ft_calloc(size_t count, size_t size);
+size_t	ft_strlen(const char *s);
+int		ft_atoi(const char *str);
+char	*ft_itoa(int n);
+char	*ft_strjoin(char const *s1, char const *s2);
 
 #endif

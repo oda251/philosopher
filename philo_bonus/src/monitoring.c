@@ -6,51 +6,55 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 07:43:05 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/20 02:55:41 by yoda             ###   ########.fr       */
+/*   Updated: 2024/02/21 14:53:42 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
-static bool	is_dead(t_data *data, t_philosopher *philo)
+void	full_monitoring(t_data *data)
+{
+	int				i;
+
+	i = 0;
+	while (i < data->common.num_of_philos)
+	{
+		sem_wait(data->sems.s_full);
+		i++;
+	}
+	exit(EXIT_SUCCESS);
+}
+
+static void	exit_if_dead(t_philosopher *philo)
 {
 	t_ms	last_eat;
 	t_ms	time;
 
-	last_eat = get_mutex_ms(philo->m_last_eat, &(philo->last_eat));
+	sem_wait(philo->s_last_eat);
+	last_eat = philo->last_eat;
+	sem_post(philo->s_last_eat);
 	if (get_current_ms(&time) == false)
-		return (end_game(data), error_message("gettimeofday error\n"), true);
-	if (time - last_eat >= data->common.time_to_die)
 	{
-		end_game(data);
-		time -= data->common.starttime;
-		put_status(&(data->m_print), time, philo->id, DIED);
-		return (true);
+		error_message("gettimeofday error\n");
+		exit(EXIT_FAILURE);
 	}
-	return (false);
+	if (time - last_eat >= philo->common->time_to_die)
+	{
+		time -= philo->common->starttime;
+		put_status(philo->sems->s_print, time, philo->id, DIED);
+		exit(EXIT_SUCCESS);
+	}
 }
 
-void	*monitoring(void *arg)
+void	*unit_monitoring(void *arg)
 {
-	int			i;
-	t_data		*data;
-	int			end_flag;
+	t_philosopher	*philo;
 
-	data = (t_data *)arg;
+	philo = (t_philosopher *)arg;
 	while (true)
 	{
 		usleep(1000);
-		i = -1;
-		while (++i < data->common.num_of_philos)
-		{
-			if (is_dead(data, &(data->philos[i])) == true)
-				return (NULL);
-		}
-		pthread_mutex_lock(&(data->m_end_flag));
-		end_flag = data->end_flag;
-		pthread_mutex_unlock(&(data->m_end_flag));
-		if (end_flag >= data->common.num_of_philos)
-			return (NULL);
+		exit_if_dead(philo);
 	}
 	return (NULL);
 }

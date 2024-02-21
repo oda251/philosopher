@@ -1,25 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   act_think.c                                        :+:      :+:    :+:   */
+/*   init_chilid_process.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/18 09:24:35 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/21 14:31:14 by yoda             ###   ########.fr       */
+/*   Created: 2024/02/21 12:38:13 by yoda              #+#    #+#             */
+/*   Updated: 2024/02/21 13:15:17 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-void	act_think(t_philosopher *p)
+void	init_child_process(pid_t *pid, void (*func)(t_data *), t_data *data)
 {
-	t_ms	time;
-
-	if (get_passed_time(p->common, &time) == false)
+	*pid = fork();
+	if (*pid == -1)
 	{
-		error_message("gettimeofday error");
-		exit(EXIT_FAILURE);
+		kill_all_philos(data);
+		error_message("fork error\n");
+		main_exit(data, EXIT_FAILURE);
 	}
-	put_status(p->sems->s_print, time, p->id, THINKING);
+	else if (*pid == 0)
+		(*func)(data);
 }
