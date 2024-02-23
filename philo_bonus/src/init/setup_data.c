@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 03:08:54 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/21 14:49:41 by yoda             ###   ########.fr       */
+/*   Updated: 2024/02/23 21:49:48 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,7 @@ void	setup_data(t_data *data, t_common_data common, t_shared_sems *sems)
 	if (!sem_create(&(sems->s_full), SEM_FULL, 0))
 		main_exit(data, EXIT_FAILURE);
 	if (!sem_create(&(sems->s_waiter), SEM_WAITER, common.num_of_philos / 2))
+		main_exit(data, EXIT_FAILURE);
+	if (!sem_create(&(sems->s_dead), SEM_DEAD, 1))
 		main_exit(data, EXIT_FAILURE);
 }

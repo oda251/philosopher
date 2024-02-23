@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 05:17:11 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/23 19:23:42 by yoda             ###   ########.fr       */
+/*   Updated: 2024/02/23 21:51:45 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,10 @@ void	kill_all_philos(t_data *data)
 	while (i < data->common.num_of_philos)
 	{
 		if (data->philos_pid[i] > 0)
+		{
 			kill(data->philos_pid[i], SIGKILL);
+			data->philos_pid[i] = 0;
+		}
 		else
 			break ;
 		i++;
@@ -39,6 +42,7 @@ void	main_exit(t_data *data, int status)
 	sem_kill(data->sems.s_print, SEM_PRINT);
 	sem_kill(data->sems.s_full, SEM_FULL);
 	sem_kill(data->sems.s_waiter, SEM_WAITER);
+	sem_kill(data->sems.s_dead, SEM_DEAD);
 	if (data->philos)
 	{
 		i = 0;

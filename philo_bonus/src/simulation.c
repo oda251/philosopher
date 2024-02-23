@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 18:54:54 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/21 14:56:16 by yoda             ###   ########.fr       */
+/*   Updated: 2024/02/23 21:18:14 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,14 @@ int	wait_all_processes(t_data *data)
 	while (i < data->common.num_of_philos + 1)
 	{
 		waitpid(-1, &tmp, 0);
-		if (errno == ECHILD)
-			break ;
+		printf("exited\n");
 		if (WIFEXITED(status))
 		{
 			kill_all_philos(data);
 			status = WEXITSTATUS(status);
 		}
+		if (errno == ECHILD)
+			break ;
 		i++;
 	}
 	return (status);

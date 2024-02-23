@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 15:53:55 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/23 20:37:17 by yoda             ###   ########.fr       */
+/*   Updated: 2024/02/23 21:45:37 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct s_shared_sems
 	sem_t							*s_forks;
 	sem_t							*s_print;
 	sem_t							*s_full;
+	sem_t							*s_dead;
 }	t_shared_sems;
 typedef struct s_philosopher
 {
