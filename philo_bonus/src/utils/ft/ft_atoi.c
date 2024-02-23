@@ -6,12 +6,11 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 20:28:13 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/23 20:35:48 by yoda             ###   ########.fr       */
+/*   Updated: 2024/02/23 20:43:10 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
-
 
 static int	solve(const char *str, const int sign)
 {
