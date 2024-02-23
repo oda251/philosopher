@@ -1,24 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_bzero.c                                         :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
+/*   By: yoda <yoda@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/19 21:36:02 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/23 20:37:24 by yoda             ###   ########.fr       */
+/*   Created: 2023/09/20 20:45:33 by yoda              #+#    #+#             */
+/*   Updated: 2023/09/24 05:45:10 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_bonus.h"
+#include "libft.h"
 
-void	ft_bzero(void *s, size_t n)
+char	*ft_strdup(const char *s1)
 {
-	size_t			i;
-	unsigned char	*dest;
+	char			*dest;
+	const size_t	len = ft_strlen(s1);
 
-	dest = (unsigned char *) s;
-	i = -1;
-	while (++i < n)
-		*(dest + i) = 0;
+	dest = malloc(sizeof(char) * (len + 1));
+	if (!dest)
+		return (NULL);
+	ft_strlcpy(dest, s1, len + 1);
+	return (dest);
 }

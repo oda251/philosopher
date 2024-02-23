@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 15:53:55 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/23 19:23:04 by yoda             ###   ########.fr       */
+/*   Updated: 2024/02/23 20:37:17 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,5 +111,6 @@ size_t	ft_strlen(const char *s);
 int		ft_atoi(const char *str);
 char	*ft_itoa(int n);
 char	*ft_strjoin(char const *s1, char const *s2);
+int		ft_isdigit(int c);
 
 #endif

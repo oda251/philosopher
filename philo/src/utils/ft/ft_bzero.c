@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/25 17:07:18 by misuzuki          #+#    #+#             */
-/*   Updated: 2024/02/20 02:52:39 by yoda             ###   ########.fr       */
+/*   Created: 2023/09/19 21:36:02 by yoda              #+#    #+#             */
+/*   Updated: 2024/02/23 20:37:32 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,12 @@
 
 void	ft_bzero(void *s, size_t n)
 {
-	if (n > 0)
-		memset(s, '\0', n);
+	size_t			i;
+	unsigned char	*dest;
+
+	dest = (unsigned char *) s;
+	i = -1;
+	while (++i < n)
+		*(dest + i) = 0;
+	return (dest);
 }

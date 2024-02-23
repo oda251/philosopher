@@ -19,7 +19,8 @@ UTILS_FT_FILES = ft_atoi.c \
 	ft_calloc.c \
 	ft_strlen.c \
 	ft_itoa.c \
-	ft_strjoin.c
+	ft_strjoin.c \
+	ft_isdigit.c
 UTILS_FT_SRC = $(addprefix $(UTILS_FT_DIR), $(UTILS_FT_FILES))
 
 UTIL_DIR = utils/

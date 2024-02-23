@@ -6,20 +6,14 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 20:28:13 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/21 13:25:20 by yoda             ###   ########.fr       */
+/*   Updated: 2024/02/23 20:35:48 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-static int	ft_isdigit(char c)
-{
-	if ('0' <= c && c <= '9')
-		return (1);
-	return (0);
-}
 
-static int	solve(const char *str)
+static int	solve(const char *str, const int sign)
 {
 	unsigned long	num;
 	unsigned long	tmp;
@@ -29,20 +23,40 @@ static int	solve(const char *str)
 	{
 		tmp = num;
 		num = num * 10 + (*str - '0');
-		if (num >= (unsigned long) LONG_MAX || tmp > num)
-			return ((int) LONG_MAX);
+		if (sign > 0)
+		{
+			if (num >= (unsigned long) LONG_MAX || tmp > num)
+				return ((int) LONG_MAX);
+		}
+		else if (num >= (unsigned long) LONG_MAX + 1 || tmp > num)
+			return ((int) LONG_MIN);
 		str++;
 	}
-	if (*str)
-		return (-1);
-	return (num);
+	return (sign * num);
+}
+
+static int	ft_isspace(char c)
+{
+	if ((9 <= c && c <= 13) || c == ' ')
+		return (1);
+	return (0);
 }
 
 int	ft_atoi(const char *str)
 {
-	if (!*str || !(*str == '+' || ft_isdigit(*str)))
-		return (-1);
-	if (*str == '+')
+	int	sign;
+
+	while (ft_isspace(*str))
 		str++;
-	return (solve(str));
+	if (!*str || !(*str == '-' || *str == '+' || ft_isdigit(*str)))
+		return (0);
+	sign = 1;
+	if (*str == '-')
+	{
+		sign = -1;
+		str++;
+	}
+	else if (*str == '+')
+		str++;
+	return (solve(str, sign));
 }

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/25 20:16:46 by misuzuki          #+#    #+#             */
-/*   Updated: 2024/02/21 13:25:33 by yoda             ###   ########.fr       */
+/*   Created: 2023/09/20 20:36:40 by yoda              #+#    #+#             */
+/*   Updated: 2024/02/23 20:36:06 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,21 @@
 
 void	*ft_calloc(size_t count, size_t size)
 {
-	void	*str;
+	const size_t	sum = count * size;
+	void			*dest;
 
-	if (count == 0 || size == 0)
+	if (!size || !count)
 	{
-		count = 1;
-		size = 1;
+		dest = ft_calloc(1, 1);
+		return (dest);
 	}
-	if (size > SIZE_MAX / count)
+	if (count > SIZE_MAX / size)
+	{
 		return (NULL);
-	str = malloc(count * size);
-	if (str == NULL)
+	}
+	dest = malloc(sum);
+	if (!dest)
 		return (NULL);
-	str = memset(str, 0, count * size);
-	return (str);
+	ft_bzero(dest, sum);
+	return (dest);
 }

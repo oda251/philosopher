@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 15:53:55 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/23 19:11:04 by yoda             ###   ########.fr       */
+/*   Updated: 2024/02/23 20:37:38 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ bool	act_sleep(t_philosopher *p);
 bool	act_think(t_philosopher *p);
 // -------------------utils-------------------
 void	ft_bzero(void *s, size_t n);
+int		ft_isdigit(int c);
 void	*ft_calloc(size_t count, size_t size);
 size_t	ft_strlen(const char *s);
 int		ft_atoi(const char *str);
