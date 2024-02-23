@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 03:08:54 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/21 14:49:52 by yoda             ###   ########.fr       */
+/*   Updated: 2024/02/23 19:23:21 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	setup_philo(t_data *data, t_philosopher *philo, int i)
 		main_exit(data, EXIT_FAILURE);
 	}
 	if (!sem_create(&(philo->s_last_eat), philo->sem_name, 1))
-			main_exit(data, EXIT_FAILURE);
+		main_exit(data, EXIT_FAILURE);
 	philo->id = i + 1;
 	philo->common = &(data->common);
 	philo->sems = &(data->sems);

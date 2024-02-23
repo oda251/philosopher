@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 15:53:55 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/21 14:50:08 by yoda             ###   ########.fr       */
+/*   Updated: 2024/02/23 19:23:04 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@
 # define SEM_UNIT_BASE	"/philo_unit_"
 # define SEM_DEAD		"/philo_dead"
 
-
 typedef long long		t_ms;
 typedef struct timeval	t_time;
 typedef struct s_common_data
@@ -67,7 +66,7 @@ typedef struct s_philosopher
 	sem_t							*s_last_eat;
 	t_ms							last_eat;
 	t_shared_sems					*sems;
-	int 							eat_count;
+	int								eat_count;
 }	t_philosopher;
 typedef struct s_data
 {
@@ -100,7 +99,8 @@ bool	sem_create(sem_t **sem, char *name, int value);
 bool	sem_kill(sem_t *sem, char *name);
 int		get_sem_ms(sem_t *sem, t_ms *time);
 void	set_sem_ms(sem_t *sem, t_ms *dest, t_ms val);
-bool	put_status(sem_t *s_print, t_ms passed_time, int philo_id, char *status);
+bool	put_status(sem_t *s_print,
+			t_ms passed_time, int philo_id, char *status);
 t_ms	convert_time(t_time time);
 void	usleep_ms(t_ms time);
 bool	get_current_ms(t_ms *time_ms);

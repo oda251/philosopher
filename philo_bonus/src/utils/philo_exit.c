@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 05:17:11 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/21 14:35:54 by yoda             ###   ########.fr       */
+/*   Updated: 2024/02/23 19:23:42 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	main_exit(t_data *data, int status)
 		{
 			if (data->philos[i].sem_name)
 				sem_kill(data->philos[i].s_last_eat,
-						data->philos[i].sem_name);
+					data->philos[i].sem_name);
 			i++;
 		}
 	}
