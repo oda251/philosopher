@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 03:19:25 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/21 14:48:32 by yoda             ###   ########.fr       */
+/*   Updated: 2024/02/23 19:01:52 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 bool	sem_create(sem_t **sem, char *name, int value)
 {
-	if (sem_unlink(name) == -1 && errno != ENOENT)
-		return (error_message("sem_unlink error"));
+	sem_unlink(name);
 	*sem = sem_open(name, O_CREAT | O_EXCL, 0644, value);
 	if (*sem == SEM_FAILED)
 		return (error_message("sem_open error"));
