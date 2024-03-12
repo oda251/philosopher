@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 09:08:22 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/23 19:14:37 by yoda             ###   ########.fr       */
+/*   Updated: 2024/03/13 01:56:02 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ bool	act_sleep(t_philosopher *p)
 		return (end_game_unit(p, "gettimeofday error\n"));
 	if (put_status_if_not_end(p, time, SLEEPING) == false)
 		return (false);
-	usleep(p->common->time_to_sleep * 1000);
+	if (usleep_ms(p->common->time_to_sleep) == false)
+		return (end_game_unit(p, NULL));
 	return (true);
 }

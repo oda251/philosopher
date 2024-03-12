@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 15:53:55 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/23 21:45:37 by yoda             ###   ########.fr       */
+/*   Updated: 2024/03/13 02:39:47 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,16 @@
 # include <fcntl.h>
 # include <errno.h>
 # include <sys/wait.h>
-# define TAKE_FORKS		"has taken a fork"
-# define EATING			"is eating"
-# define SLEEPING		"is sleeping"
-# define THINKING		"is thinking"
-# define DIED			"died"
+# define TAKE_FORKS		1
+# define EATING			2
+# define SLEEPING		3
+# define THINKING		4
+# define DIED			5
 # define SEM_WAITER		"/philo_waiter"
 # define SEM_FORKS		"/philo_forks"
 # define SEM_PRINT		"/philo_print"
 # define SEM_FULL		"/philo_full"
 # define SEM_UNIT_BASE	"/philo_unit_"
-# define SEM_DEAD		"/philo_dead"
 
 typedef long long		t_ms;
 typedef struct timeval	t_time;
@@ -56,7 +55,6 @@ typedef struct s_shared_sems
 	sem_t							*s_forks;
 	sem_t							*s_print;
 	sem_t							*s_full;
-	sem_t							*s_dead;
 }	t_shared_sems;
 typedef struct s_philosopher
 {
@@ -101,9 +99,9 @@ bool	sem_kill(sem_t *sem, char *name);
 int		get_sem_ms(sem_t *sem, t_ms *time);
 void	set_sem_ms(sem_t *sem, t_ms *dest, t_ms val);
 bool	put_status(sem_t *s_print,
-			t_ms passed_time, int philo_id, char *status);
+			t_ms passed_time, int philo_id, int status);
 t_ms	convert_time(t_time time);
-void	usleep_ms(t_ms time);
+bool	usleep_ms(t_ms time);
 bool	get_current_ms(t_ms *time_ms);
 bool	get_passed_time(t_common_data *common, t_ms *dest);
 void	ft_bzero(void *s, size_t n);

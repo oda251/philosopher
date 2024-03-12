@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 07:43:05 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/20 02:55:41 by yoda             ###   ########.fr       */
+/*   Updated: 2024/03/13 02:20:03 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	*monitoring(void *arg)
 	data = (t_data *)arg;
 	while (true)
 	{
-		usleep(1000);
+		usleep(100);
 		i = -1;
 		while (++i < data->common.num_of_philos)
 		{

@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 01:55:28 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/21 14:51:23 by yoda             ###   ########.fr       */
+/*   Updated: 2024/03/13 02:14:47 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ void	act_eat(t_philosopher *p)
 	sem_wait(sems->s_forks);
 	sem_wait(sems->s_forks);
 	update_status(p);
-	usleep_ms(p->common->time_to_eat);
+	if (usleep_ms(p->common->time_to_eat) == false)
+		exit(EXIT_FAILURE);
 	sem_post(sems->s_forks);
 	sem_post(sems->s_forks);
 	sem_post(sems->s_waiter);

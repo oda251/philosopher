@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 09:08:22 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/21 14:31:06 by yoda             ###   ########.fr       */
+/*   Updated: 2024/03/13 02:15:15 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,6 @@ void	act_sleep(t_philosopher *p)
 		exit(EXIT_FAILURE);
 	}
 	put_status(p->sems->s_print, time, p->id, SLEEPING);
-	usleep_ms(p->common->time_to_sleep);
+	if (usleep_ms(p->common->time_to_sleep) == false)
+		exit(EXIT_FAILURE);
 }

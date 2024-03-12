@@ -45,7 +45,7 @@ SRC = $(addprefix $(SRC_DIR), $(SRC_FILES))
 
 INCLUDES = -I ./include/
 CFLAGS = -Wall -Wextra -Werror
-TESTFLAGS = -g -fsanitize=address
+TESTFLAGS = -g -fsanitize=thread
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Linux)
 	CC = gcc

@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 15:53:55 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/23 20:37:38 by yoda             ###   ########.fr       */
+/*   Updated: 2024/03/13 02:32:12 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@
 # include <sys/time.h>
 # include <string.h>
 # include <limits.h>
-# define TAKE_FORKS	"has taken a fork"
-# define EATING		"is eating"
-# define SLEEPING	"is sleeping"
-# define THINKING	"is thinking"
-# define DIED		"died"
+# define TAKE_FORKS	1
+# define EATING		2
+# define SLEEPING	3
+# define THINKING	4
+# define DIED		5
 
 typedef long long		t_ms;
 typedef struct timeval	t_time;
@@ -94,11 +94,11 @@ bool	end_game_unit(t_philosopher *philo, char *message);
 bool	error_message(char *msg);
 void	free_data(t_data *data, int setup_progress);
 bool	put_status(pthread_mutex_t *m_print,
-			t_ms passed_time, int philo_id, char *status);
+			t_ms passed_time, int philo_id, int status);
 t_ms	convert_time(t_time time);
-void	usleep_ms(t_ms time);
+bool	usleep_ms(t_ms time);
 bool	get_current_ms(t_ms *time_ms);
 bool	get_passed_time(t_common_data *common, t_ms *dest);
-bool	put_status_if_not_end(t_philosopher *p, t_ms passed_time, char *status);
+bool	put_status_if_not_end(t_philosopher *p, t_ms passed_time, int status);
 
 #endif

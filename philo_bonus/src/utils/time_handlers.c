@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 01:23:18 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/21 13:24:56 by yoda             ###   ########.fr       */
+/*   Updated: 2024/03/13 02:14:07 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,19 @@ t_ms	convert_time(t_time time)
 	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }
 
-void	usleep_ms(t_ms time)
+bool	usleep_ms(t_ms time)
 {
-	usleep(time * 1000);
+	long long	start;
+	long long	current;
+
+	if (get_current_ms(&start) == false)
+		return (error_message("gettimeofday error\n"));
+	current = start;
+	while (current - start < time)
+	{
+		usleep(100);
+		if (get_current_ms(&current) == false)
+			return (error_message("gettimeofday error\n"));
+	}
+	return (true);
 }

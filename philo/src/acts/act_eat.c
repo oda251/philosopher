@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 01:55:28 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/23 19:17:56 by yoda             ###   ########.fr       */
+/*   Updated: 2024/03/13 02:02:22 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ bool	act_eat(t_philosopher *p)
 		pthread_mutex_unlock(p->right_fork);
 		return (false);
 	}
-	usleep_ms(p->common->time_to_eat);
+	if (usleep_ms(p->common->time_to_eat) == false)
+		return (end_game_unit(p, NULL));
 	pthread_mutex_unlock(p->left_fork);
 	pthread_mutex_unlock(p->right_fork);
 	return (true);
