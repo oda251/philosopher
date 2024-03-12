@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 15:53:55 by yoda              #+#    #+#             */
-/*   Updated: 2024/03/13 02:32:12 by yoda             ###   ########.fr       */
+/*   Updated: 2024/03/13 02:53:19 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,7 @@ void	end_game(t_data *data);
 bool	end_game_unit(t_philosopher *philo, char *message);
 bool	error_message(char *msg);
 void	free_data(t_data *data, int setup_progress);
-bool	put_status(pthread_mutex_t *m_print,
-			t_ms passed_time, int philo_id, int status);
+bool	put_status(t_philosopher *p, int status);
 t_ms	convert_time(t_time time);
 bool	usleep_ms(t_ms time);
 bool	get_current_ms(t_ms *time_ms);

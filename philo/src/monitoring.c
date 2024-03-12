@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 07:43:05 by yoda              #+#    #+#             */
-/*   Updated: 2024/03/13 02:20:03 by yoda             ###   ########.fr       */
+/*   Updated: 2024/03/13 03:09:46 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,7 @@ static bool	is_dead(t_data *data, t_philosopher *philo)
 	if (get_current_ms(&time) == false)
 		return (end_game(data), error_message("gettimeofday error\n"), true);
 	if (time - last_eat >= data->common.time_to_die)
-	{
-		end_game(data);
-		time -= data->common.starttime;
-		put_status(&(data->m_print), time, philo->id, DIED);
 		return (true);
-	}
 	return (false);
 }
 
@@ -44,12 +39,12 @@ void	*monitoring(void *arg)
 		while (++i < data->common.num_of_philos)
 		{
 			if (is_dead(data, &(data->philos[i])) == true)
-				return (NULL);
+				return (put_status(&(data->philos[i]), DIED), NULL);
 		}
 		pthread_mutex_lock(&(data->m_end_flag));
 		end_flag = data->end_flag;
 		pthread_mutex_unlock(&(data->m_end_flag));
-		if (end_flag >= data->common.num_of_philos)
+		if (end_flag == data->common.num_of_philos)
 			return (NULL);
 	}
 	return (NULL);
