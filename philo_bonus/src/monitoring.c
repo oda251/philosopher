@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 07:43:05 by yoda              #+#    #+#             */
-/*   Updated: 2024/03/13 03:53:34 by yoda             ###   ########.fr       */
+/*   Updated: 2024/03/13 04:46:29 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,7 @@ static void	exit_if_dead(t_philosopher *philo)
 	t_ms	last_eat;
 	t_ms	time;
 
-	sem_wait(philo->s_last_eat);
-	last_eat = philo->last_eat;
-	sem_post(philo->s_last_eat);
+	last_eat = get_sem_ms(philo->s_last_eat, &(philo->last_eat));
 	if (get_current_ms(&time) == false)
 	{
 		error_message("gettimeofday error\n");

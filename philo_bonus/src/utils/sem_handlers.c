@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 03:19:25 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/23 19:23:57 by yoda             ###   ########.fr       */
+/*   Updated: 2024/03/13 04:08:43 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ bool	sem_kill(sem_t *sem, char *name)
 	return (true);
 }
 
-int	get_sem_ms(sem_t *sem, t_ms *time)
+t_ms	get_sem_ms(sem_t *sem, t_ms *time)
 {
-	int	value;
+	t_ms	value;
 
 	sem_wait(sem);
 	value = *time;

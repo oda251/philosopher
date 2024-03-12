@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 15:53:55 by yoda              #+#    #+#             */
-/*   Updated: 2024/03/13 03:47:17 by yoda             ###   ########.fr       */
+/*   Updated: 2024/03/13 04:11:25 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ void	main_exit(t_data *data, int status);
 bool	error_message(char *msg);
 bool	sem_create(sem_t **sem, char *name, int value);
 bool	sem_kill(sem_t *sem, char *name);
-int		get_sem_ms(sem_t *sem, t_ms *time);
+t_ms	get_sem_ms(sem_t *sem, t_ms *time);
 void	set_sem_ms(sem_t *sem, t_ms *dest, t_ms val);
 bool	put_status(t_philosopher *p, int status);
 t_ms	convert_time(t_time time);
