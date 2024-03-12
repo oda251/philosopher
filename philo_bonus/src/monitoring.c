@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 07:43:05 by yoda              #+#    #+#             */
-/*   Updated: 2024/03/13 02:34:46 by yoda             ###   ########.fr       */
+/*   Updated: 2024/03/13 03:53:34 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,7 @@ static void	exit_if_dead(t_philosopher *philo)
 	}
 	if (time - last_eat >= philo->common->time_to_die)
 	{
-		time -= philo->common->starttime;
-		put_status(philo->sems->s_print, time, philo->id, DIED);
+		put_status(philo, DIED);
 		exit(EXIT_SUCCESS);
 	}
 }
