@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 15:01:33 by yoda              #+#    #+#             */
-/*   Updated: 2024/03/21 22:24:56 by yoda             ###   ########.fr       */
+/*   Updated: 2024/03/21 23:06:28 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,46 +25,40 @@ void	*serve_all(t_data *data)
 	return (NULL);
 }
 
-void	lock_all(t_data *data)
+void	floor_loop(t_data *data, int start)
 {
 	int	i;
+	int	tmp;
 
-	i = 0;
-	while (i < data->common.num_of_philos)
+	i = -1;
+	while (++i < data->common.num_of_philos / 2)
 	{
-		pthread_mutex_lock(&(data->waiters[i]));
-		i++;
+		tmp = (i * 2 + start) % data->common.num_of_philos;
+		pthread_mutex_unlock(&(data->waiters[tmp]));
+	}
+	usleep_ms(60);
+	while (--i >= 0)
+	{
+		tmp = (i * 2 + start) % data->common.num_of_philos;
+		pthread_mutex_lock(&(data->waiters[tmp]));
 	}
 }
 
 void	*floor_(void *arg)
 {
-	int		i;
-	int		tmp;
 	int		start;
 	t_data	*data;
 
 	data = (t_data *)arg;
-	lock_all(data);
 	if (wait_start(&(data->common)) == false)
 		return (end_game(data), NULL);
 	start = -1;
 	while (true)
 	{
 		start = (start + 1) % data->common.num_of_philos;
-		i = -1;
-		while (++i < data->common.num_of_philos / 2)
-		{
-			tmp = (i * 2 + start) % data->common.num_of_philos;
-			pthread_mutex_unlock(&(data->waiters[tmp]));
-		}
-		usleep_ms(60);
-		while (--i >= 0)
-		{
-			tmp = (i * 2 + start) % data->common.num_of_philos;
-			pthread_mutex_lock(&(data->waiters[tmp]));
-		}
-		if (get_mutex_int(&(data->m_end_flag), &(data->end_flag)) >= data->common.num_of_philos)
+		floor_loop(data, start);
+		if (get_mutex_int(&(data->m_end_flag), &(data->end_flag))
+			>= data->common.num_of_philos)
 			return (serve_all(data));
 	}
 	return (serve_all(data));
