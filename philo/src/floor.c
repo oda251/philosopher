@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 15:01:33 by yoda              #+#    #+#             */
-/*   Updated: 2024/03/21 18:57:06 by yoda             ###   ########.fr       */
+/*   Updated: 2024/03/21 22:24:56 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,18 @@ void	*serve_all(t_data *data)
 	return (NULL);
 }
 
+void	lock_all(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (i < data->common.num_of_philos)
+	{
+		pthread_mutex_lock(&(data->waiters[i]));
+		i++;
+	}
+}
+
 void	*floor_(void *arg)
 {
 	int		i;
@@ -33,6 +45,7 @@ void	*floor_(void *arg)
 	t_data	*data;
 
 	data = (t_data *)arg;
+	lock_all(data);
 	if (wait_start(&(data->common)) == false)
 		return (end_game(data), NULL);
 	start = -1;
