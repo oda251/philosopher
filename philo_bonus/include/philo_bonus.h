@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 15:53:55 by yoda              #+#    #+#             */
-/*   Updated: 2024/03/13 04:11:25 by yoda             ###   ########.fr       */
+/*   Updated: 2024/03/21 22:37:53 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,5 +110,6 @@ int		ft_atoi(const char *str);
 char	*ft_itoa(int n);
 char	*ft_strjoin(char const *s1, char const *s2);
 int		ft_isdigit(int c);
+bool	wait_start(t_common_data *common);
 
 #endif

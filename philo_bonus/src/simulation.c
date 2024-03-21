@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 18:54:54 by yoda              #+#    #+#             */
-/*   Updated: 2024/03/13 02:40:31 by yoda             ###   ########.fr       */
+/*   Updated: 2024/03/21 22:38:20 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int	simulation(t_data *data)
 
 	if (get_current_ms(&(data->common.starttime)) == false)
 		return (error_message("gettimeofday error\n"));
+	data->common.starttime += 1000;
 	i = 0;
 	while (i < data->common.num_of_philos)
 	{
