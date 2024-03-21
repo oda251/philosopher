@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 05:17:11 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/20 03:05:00 by yoda             ###   ########.fr       */
+/*   Updated: 2024/03/21 18:07:51 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,20 @@ void	free_data(t_data *data, int setup_progress)
 {
 	int	i;
 
+	pthread_mutex_destroy(&(data->m_print));
 	if (data->tid)
 		free(data->tid);
+	if (data->waiters)
+		free(data->waiters);
+	if (data->waiter_tid)
+		free(data->waiter_tid);
 	if (data->forks)
 	{
 		i = 0;
 		while (i < setup_progress)
 		{
 			pthread_mutex_destroy(&(data->forks[i]));
+			pthread_mutex_destroy(&(data->waiters[i]));
 			i++;
 		}
 		free(data->forks);

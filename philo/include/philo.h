@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 15:53:55 by yoda              #+#    #+#             */
-/*   Updated: 2024/03/13 02:53:19 by yoda             ###   ########.fr       */
+/*   Updated: 2024/03/21 18:10:36 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,15 +51,19 @@ typedef struct s_philosopher
 	pthread_mutex_t					*m_end_flag;
 	int								*end_flag;
 	pthread_mutex_t					*m_print;
+	pthread_mutex_t					*m_waiter;
 }	t_philosopher;
 typedef struct s_data
 {
 	t_common_data					common;
+	pthread_mutex_t					m_print;
 	pthread_t						monitor_tid;
+	pthread_t						floor_tid;
+	pthread_t						*waiter_tid;
 	pthread_t						*tid;
 	t_philosopher					*philos;
 	pthread_mutex_t					*forks;
-	pthread_mutex_t					m_print;
+	pthread_mutex_t					*waiters;
 	pthread_mutex_t					m_end_flag;
 	int								end_flag;
 }	t_data;
@@ -72,6 +76,7 @@ bool	setup_philos(t_data *data);
 bool	game(t_data *data);
 void	*unit_philo(void *arg);
 void	*monitoring(void *arg);
+void	*floor_(void *arg);
 // -------------------acts-------------------
 bool	act_eat(t_philosopher *p);
 bool	act_sleep(t_philosopher *p);
@@ -84,7 +89,7 @@ size_t	ft_strlen(const char *s);
 int		ft_atoi(const char *str);
 bool	mutex_init(pthread_mutex_t *mutex);
 bool	get_mutex_bool(pthread_mutex_t *m, bool *buf);
-bool	get_mutex_int(pthread_mutex_t *m, int *buf);
+int		get_mutex_int(pthread_mutex_t *m, int *buf);
 t_ms	get_mutex_ms(pthread_mutex_t *m, t_ms *buf);
 void	set_mutex_int(pthread_mutex_t *m, int *buf, int val);
 void	set_mutex_bool(pthread_mutex_t *m, bool *buf, bool val);
@@ -98,6 +103,6 @@ t_ms	convert_time(t_time time);
 bool	usleep_ms(t_ms time);
 bool	get_current_ms(t_ms *time_ms);
 bool	get_passed_time(t_common_data *common, t_ms *dest);
-bool	put_status_if_not_end(t_philosopher *p, t_ms passed_time, int status);
+bool	wait_start(t_common_data *common);
 
 #endif

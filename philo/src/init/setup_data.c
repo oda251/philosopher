@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 03:08:54 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/20 03:04:36 by yoda             ###   ########.fr       */
+/*   Updated: 2024/03/21 18:07:40 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,17 @@ bool	setup_data(t_data *data)
 {
 	int	i;
 
+	if (mutex_init(&(data->m_print)) == false)
+		return (error_message("mutex_init error\n"));
 	data->forks = ft_calloc(
+			data->common.num_of_philos, sizeof(pthread_mutex_t));
+	data->waiters = ft_calloc(
 			data->common.num_of_philos, sizeof(pthread_mutex_t));
 	data->tid = ft_calloc(
 			data->common.num_of_philos, sizeof(pthread_t));
-	if (!data->forks || !data->tid)
+	data->waiter_tid = ft_calloc(
+			data->common.num_of_philos, sizeof(pthread_t));
+	if (!data->forks || !data->tid || !data->waiters || !data->waiter_tid)
 		return (free_data(data, -2), error_message("calloc error\n"));
 	if (mutex_init(&(data->m_print)) == false)
 		return (free_data(data, 0), error_message("mutex_init error\n"));
@@ -29,6 +35,10 @@ bool	setup_data(t_data *data)
 	{
 		if (mutex_init(&(data->forks[i])) == false)
 			return (free_data(data, i), error_message("mutex_init error\n"));
+		if (mutex_init(&(data->waiters[i])) == false)
+			return (pthread_mutex_destroy(&(data->forks[i])),
+				free_data(data, i), error_message("mutex_init error\n"));
+		pthread_mutex_lock(&(data->waiters[i]));
 	}
 	if (mutex_init(&(data->m_end_flag)) == false)
 		return (free_data(data, i), error_message("mutex_init error\n"));

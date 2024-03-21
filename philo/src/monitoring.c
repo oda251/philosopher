@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 07:43:05 by yoda              #+#    #+#             */
-/*   Updated: 2024/03/13 03:09:46 by yoda             ###   ########.fr       */
+/*   Updated: 2024/03/21 18:57:55 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,20 +32,20 @@ void	*monitoring(void *arg)
 	int			end_flag;
 
 	data = (t_data *)arg;
+	if (wait_start(&(data->common)) == false)
+		return (end_game(data), NULL);
 	while (true)
 	{
-		usleep(100);
 		i = -1;
 		while (++i < data->common.num_of_philos)
 		{
 			if (is_dead(data, &(data->philos[i])) == true)
 				return (put_status(&(data->philos[i]), DIED), NULL);
 		}
-		pthread_mutex_lock(&(data->m_end_flag));
-		end_flag = data->end_flag;
-		pthread_mutex_unlock(&(data->m_end_flag));
-		if (end_flag == data->common.num_of_philos)
+		end_flag = get_mutex_int(&(data->m_end_flag), &end_flag);
+		if (end_flag >= data->common.num_of_philos)
 			return (NULL);
+		usleep(100);
 	}
 	return (NULL);
 }
