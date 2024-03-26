@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 01:55:28 by yoda              #+#    #+#             */
-/*   Updated: 2024/03/21 22:35:44 by yoda             ###   ########.fr       */
+/*   Updated: 2024/03/26 18:18:31 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,13 @@ bool	act_eat(t_philosopher *p)
 	pthread_mutex_lock(p->m_waiter);
 	pthread_mutex_lock(p->left_fork);
 	pthread_mutex_lock(p->right_fork);
-	result = put_status(p, TAKE_FORKS);
-	result = result && usleep_ms(p->common->time_to_eat);
+	if (put_status == false)
+		return (end_game_unit(p, NULL));
+	if (usleep_ms(p->common->time_to_eat) == false)
+		return (end_game_unit(p, NULL));
 	pthread_mutex_unlock(p->right_fork);
 	pthread_mutex_unlock(p->left_fork);
 	pthread_mutex_unlock(p->m_waiter);
-	if (result == false)
-		return (end_game_unit(p, NULL));
 	result = update_status(p);
 	return (result);
 }

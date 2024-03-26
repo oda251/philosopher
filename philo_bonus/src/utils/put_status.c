@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 21:55:34 by yoda              #+#    #+#             */
-/*   Updated: 2024/03/13 05:12:39 by yoda             ###   ########.fr       */
+/*   Updated: 2024/03/26 18:19:58 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,10 @@ bool	put_status(t_philosopher *p, int status)
 {
 	t_ms	time;
 
+	sem_wait(p->sems->s_print);
 	if (get_current_ms(&time) == false)
 		return (error_message("gettimeofday error\n"), false);
 	time -= p->common->starttime;
-	sem_wait(p->sems->s_print);
 	if (status == TAKE_FORKS)
 		printf("%.3lld %d %s\n%.3lld %d %s\n",
 			time, p->id, get_message(status), time, p->id, get_message(status));
