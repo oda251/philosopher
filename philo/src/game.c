@@ -6,22 +6,38 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 18:54:54 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/20 02:45:12 by yoda             ###   ########.fr       */
+/*   Updated: 2024/03/21 23:00:25 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+static bool	setup(t_data *data)
+{
+	int	i;
+
+	i = -1;
+	while (++i < data->common.num_of_philos)
+		pthread_mutex_lock(&(data->waiters[i]));
+	if (get_current_ms(&(data->common.starttime)) == false)
+		return (error_message("gettimeofday error\n"));
+	data->common.starttime += 1000;
+	while (--i >= 0)
+		data->philos[i].last_eat = data->common.starttime;
+	return (true);
+}
+
 bool	game(t_data *data)
 {
 	int	i;
 
-	if (get_current_ms(&(data->common.starttime)) == false)
-		return (end_game(data), error_message("gettimeofday error\n"));
+	if (setup(data) == false)
+		return (false);
+	if (pthread_create(&(data->floor_tid), NULL, floor_, data))
+		return (error_message("pthread_create error\n"));
 	i = 0;
 	while (i < data->common.num_of_philos)
 	{
-		((data->philos)[i]).last_eat = data->common.starttime;
 		if (pthread_create(&(data->tid[i]), NULL,
 				unit_philo, &((data->philos)[i])) != 0)
 			return (end_game(data), error_message("pthread_create error\n"));
@@ -29,6 +45,7 @@ bool	game(t_data *data)
 	}
 	if (pthread_create(&(data->monitor_tid), NULL, monitoring, data))
 		return (end_game(data), error_message("pthread_create error\n"));
+	pthread_join(data->floor_tid, NULL);
 	pthread_join(data->monitor_tid, NULL);
 	i = 0;
 	while (i < data->common.num_of_philos)

@@ -30,7 +30,8 @@ UTIL_FILES = $(UTILS_FT_SRC) \
 	philo_exit.c \
 	put_status.c \
 	sem_handlers.c \
-	time_handlers.c
+	time_handlers.c \
+	wait_start.c
 UTILS_SRC = $(addprefix $(UTIL_DIR), $(UTIL_FILES))
 
 SRC_DIR = ./src/

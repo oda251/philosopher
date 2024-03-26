@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 03:08:54 by yoda              #+#    #+#             */
-/*   Updated: 2024/02/20 02:49:55 by yoda             ###   ########.fr       */
+/*   Updated: 2024/03/21 14:41:46 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ static bool	setup_philo(t_data *data, int num_of_philos, int i)
 	data->philos[i].m_print = &(data->m_print);
 	data->philos[i].id = i + 1;
 	data->philos[i].common = &(data->common);
+	data->philos[i].m_waiter = &(data->waiters[i]);
 	data->philos[i].left_fork = &(data->forks[i]);
 	data->philos[i].right_fork = &(data->forks[(i + 1) % num_of_philos]);
 	data->philos[i].end_flag = &(data->end_flag);

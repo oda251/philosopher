@@ -1,34 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   unit_philo.c                                       :+:      :+:    :+:   */
+/*   wait_start.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/18 08:16:44 by yoda              #+#    #+#             */
-/*   Updated: 2024/03/21 22:41:35 by yoda             ###   ########.fr       */
+/*   Created: 2024/03/21 17:00:10 by yoda              #+#    #+#             */
+/*   Updated: 2024/03/21 23:14:09 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-void	*unit_philo(void *arg)
+bool	wait_start(t_common_data *common)
 {
-	t_philosopher	*philo;
-	pthread_t		monitor;
+	t_ms	time;
 
-	philo = (t_philosopher *)arg;
-	if (pthread_create(&monitor, NULL, unit_monitoring, philo) != 0)
+	if (get_current_ms(&time) == false)
+		return (error_message("gettimeofday error\n"));
+	while (time < common->starttime)
 	{
-		error_message("pthread_create error\n");
-		exit(EXIT_FAILURE);
+		usleep(100);
+		if (get_current_ms(&time) == false)
+			return (error_message("gettimeofday error\n"));
 	}
-	wait_start(philo->common);
-	while (true)
-	{
-		act_eat(philo);
-		act_sleep(philo);
-		act_think(philo);
-	}
-	return (NULL);
+	return (true);
 }

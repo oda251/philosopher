@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 21:55:34 by yoda              #+#    #+#             */
-/*   Updated: 2024/03/13 03:06:37 by yoda             ###   ########.fr       */
+/*   Updated: 2024/03/21 22:54:14 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ bool	put_status(t_philosopher *p, int status)
 	t_ms	time;
 
 	if (get_current_ms(&time) == false)
-		return (error_message("gettimeofday error\n"), false);
+		return (error_message("gettimeofday error\n"), end_game_unit(p, NULL));
 	time -= p->common->starttime;
 	pthread_mutex_lock(p->m_end_flag);
 	if (*(p->end_flag) >= p->common->num_of_philos)
@@ -41,12 +41,13 @@ bool	put_status(t_philosopher *p, int status)
 		return (false);
 	}
 	printf("%.3lld %d %s\n", time, p->id, get_message(status));
-	if (status == DIED)
+	if (status == TAKE_FORKS)
 	{
-		(*(p->end_flag)) += p->common->num_of_philos;
-		pthread_mutex_unlock(p->m_end_flag);
-		return (true);
+		printf("%.3lld %d %s\n", time, p->id, get_message(status));
+		printf("%.3lld %d %s\n", time, p->id, get_message(EATING));
 	}
+	if (status == DIED)
+		*(p->end_flag) = p->common->num_of_philos;
 	pthread_mutex_unlock(p->m_end_flag);
 	return (true);
 }

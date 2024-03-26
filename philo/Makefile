@@ -30,7 +30,8 @@ UTIL_FILES = $(UTILS_FT_SRC) \
 	mutex_init.c \
 	put_status.c \
 	set_mutex.c \
-	time_handlers.c
+	time_handlers.c \
+	wait_start.c
 UTILS_SRC = $(addprefix $(UTIL_DIR), $(UTIL_FILES))
 
 SRC_DIR = ./src/
@@ -40,12 +41,13 @@ SRC_FILES = $(ACT_SRC) \
 	game.c \
 	main.c \
 	monitoring.c \
+	floor.c \
 	unit_philo.c
 SRC = $(addprefix $(SRC_DIR), $(SRC_FILES))
 
 INCLUDES = -I ./include/
 CFLAGS = -Wall -Wextra -Werror
-TESTFLAGS = -g -fsanitize=thread
+TESTFLAGS = -g -fsanitize=address
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Linux)
 	CC = gcc
