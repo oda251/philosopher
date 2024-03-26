@@ -6,7 +6,7 @@
 /*   By: yoda <yoda@student.42tokyo.jp>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 15:01:33 by yoda              #+#    #+#             */
-/*   Updated: 2024/03/21 23:06:28 by yoda             ###   ########.fr       */
+/*   Updated: 2024/03/26 17:15:14 by yoda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,12 @@ void	*floor_(void *arg)
 {
 	int		start;
 	t_data	*data;
+	int		i;
 
 	data = (t_data *)arg;
+	i = -1;
+	while (++i < data->common.num_of_philos)
+		pthread_mutex_lock(&(data->waiters[i]));
 	if (wait_start(&(data->common)) == false)
 		return (end_game(data), NULL);
 	start = -1;
